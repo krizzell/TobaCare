@@ -34,5 +34,12 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'ai' => [
+    'url'       => env('AI_SERVICE_URL'),
+    'token'     => env('AI_SERVICE_TOKEN'),
+    'timeout'   => (int) env('AI_TIMEOUT_SECONDS', 15),
+    'conf_low'  => (float) env('AI_CONF_LOW', 0.5),
+    'conf_high' => (float) env('AI_CONF_HIGH', 0.8),
+],
 
 ];

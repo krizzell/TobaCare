@@ -1,0 +1,13 @@
+{
+    "category_id":  1,
+    "title":  "Jalan berlubang depan sekolah",
+    "description":  "Jalan di depan sekolah berlubang dan membahayakan pengendara.",
+    "location":  {
+                     "lng":  99.0667,
+                     "lat":  2.3333,
+                     "address":  "Depan sekolah"
+                 },
+    "image_ids":  [
+                      "01a0ffff-aa39-7125-a839-98fd5b2aa5d8"
+                  ]
+}

@@ -1,0 +1,483 @@
+@extends('layouts.citizen')
+
+@section('title', 'Buat Laporan Baru — TobaCare')
+
+@section('content')
+<div class="max-w-2xl mx-auto space-y-6">
+
+    <!-- Breadcrumb & Back to Home / Reports -->
+    <div class="flex items-center justify-between text-xs text-slate-500">
+        <div class="flex items-center space-x-2">
+            <a href="/" class="hover:text-slate-900 transition flex items-center">
+                <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Beranda
+            </a>
+            <span>/</span>
+            <a href="/citizen/reports" class="hover:text-slate-900 transition font-medium">Aspirasi Saya</a>
+            <span>/</span>
+            <span class="text-slate-800 font-semibold">Buat Laporan</span>
+        </div>
+        <a href="/" class="text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center">
+            &larr; Kembali ke Beranda
+        </a>
+    </div>
+
+    <!-- Stepper Header -->
+    <div class="bg-white p-4 sm:p-6 rounded-3xl border border-slate-200/80 shadow-2xs">
+        <div class="flex items-center justify-between text-xs font-bold text-slate-400 mb-3 px-1">
+            <span id="step-label-1" class="text-rose-600 flex items-center">
+                <span class="w-5 h-5 rounded-full bg-rose-600 text-white flex items-center justify-center text-[10px] mr-1.5">1</span>
+                Foto Bukti
+            </span>
+            <span class="w-8 sm:w-12 h-0.5 bg-slate-200" id="step-line-1"></span>
+            <span id="step-label-2" class="flex items-center">
+                <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] mr-1.5" id="step-num-2">2</span>
+                Lokasi & Detail
+            </span>
+            <span class="w-8 sm:w-12 h-0.5 bg-slate-200" id="step-line-2"></span>
+            <span id="step-label-3" class="flex items-center">
+                <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] mr-1.5" id="step-num-3">3</span>
+                Kirim
+            </span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900" id="wizard-title">
+            Unggah Foto Bukti Kerusakan
+        </h1>
+        <p class="text-xs text-slate-500 mt-1" id="wizard-desc">
+            Ambil foto jelas di lokasi kejadian (jalan berlubang, lampu padam, atau tumpukan sampah).
+        </p>
+    </div>
+
+    <!-- Wizard Form Container -->
+    <form id="report-form" onsubmit="event.preventDefault()">
+        
+        <!-- STEP 1: UPLOAD PHOTO (FR-01) -->
+        <div id="step-content-1" class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-2xs space-y-5">
+            <div class="border-2 border-dashed border-slate-300 hover:border-rose-400 rounded-3xl p-6 sm:p-10 text-center transition cursor-pointer relative bg-slate-50/50 hover:bg-rose-50/30"
+                 onclick="document.getElementById('photo-input').click()">
+                <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handlePhotoSelect(event)">
+                
+                <div class="space-y-3">
+                    <div class="w-16 h-16 rounded-2xl bg-rose-100 text-rose-600 mx-auto flex items-center justify-center shadow-inner">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-sm font-bold text-slate-800 block">Sentuh untuk Memilih / Mengambil Foto</span>
+                        <span class="text-xs text-slate-400 mt-1 block">Format JPG, PNG, atau WebP (Maks. 5 MB)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Preview Area -->
+            <div id="photo-preview-box" class="hidden rounded-2xl border border-slate-200 p-4 bg-slate-50 flex items-center justify-between">
+                <div class="flex items-center space-x-3 min-w-0">
+                    <img id="photo-preview-img" src="" alt="Pratinjau" class="w-16 h-16 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                    <div class="min-w-0">
+                        <span id="photo-preview-name" class="text-xs font-bold text-slate-800 block truncate">foto_kejadian.jpg</span>
+                        <span id="photo-upload-status" class="text-[11px] text-emerald-600 font-semibold flex items-center mt-0.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Siap Diproses
+                        </span>
+                    </div>
+                </div>
+                <button type="button" onclick="removePhoto()" class="text-xs text-rose-600 hover:text-rose-800 font-bold px-3 py-1.5 rounded-lg hover:bg-rose-50 transition cursor-pointer">
+                    Ganti Foto
+                </button>
+            </div>
+
+            <div class="pt-4 flex justify-end">
+                <button type="button" id="btn-next-1" onclick="goToStep(2)" disabled
+                        class="px-6 py-2.5 rounded-full font-bold text-white text-xs sm:text-sm bg-slate-900 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-800 shadow-xs transition cursor-pointer flex items-center">
+                    <span>Lanjut ke Lokasi & Detail</span>
+                    <svg class="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 2: DETAIL & LOCATION (FR-03, FR-04, FR-05) -->
+        <div id="step-content-2" class="hidden bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-2xs space-y-4">
+            
+            <!-- Judul Laporan -->
+            <div>
+                <label for="report-title" class="block text-xs font-bold text-slate-700 mb-1">
+                    Judul Pengaduan <span class="text-rose-500">*</span>
+                </label>
+                <input type="text" id="report-title" required minlength="5" maxlength="100"
+                       placeholder="Contoh: Aspal amblas berlubang dalam di depan Puskesmas Porsea"
+                       class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
+                <span class="text-[10px] text-slate-400 mt-1 block">Tuliskan ringkasan inti permasalahan (minimal 5 karakter).</span>
+            </div>
+
+            <!-- Kategori Masalah -->
+            <div>
+                <label for="report-category" class="block text-xs font-bold text-slate-700 mb-1">
+                    Kategori Fasilitas <span class="text-rose-500">*</span>
+                </label>
+                <select id="report-category" required
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
+                    <option value="">-- Pilih Kategori Kerusakan --</option>
+                    @if(isset($categories) && count($categories) > 0)
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <span class="text-[10px] text-slate-400 mt-1 block">Sistem AI akan mengecek kesesuaian kategori ini dengan foto bukti yang Anda kirim.</span>
+            </div>
+
+            <!-- Deskripsi Rinci -->
+            <div>
+                <label for="report-desc" class="block text-xs font-bold text-slate-700 mb-1">
+                    Deskripsi Lengkap Kejadian <span class="text-rose-500">*</span>
+                </label>
+                <textarea id="report-desc" rows="3" required minlength="20" maxlength="1000"
+                          placeholder="Jelaskan kondisi kerusakan, potensi bahaya, atau sejak kapan kondisi ini terjadi (minimal 20 karakter)..."
+                          class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"></textarea>
+            </div>
+
+            <!-- Lokasi & Alamat (FR-04) -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <label for="report-address" class="block text-xs font-bold text-slate-700">
+                        Alamat / Patokan Lokasi di Kab. Toba <span class="text-rose-500">*</span>
+                    </label>
+                    <button type="button" onclick="detectGPSLocation()"
+                            class="text-[11px] font-semibold text-rose-600 hover:text-rose-800 flex items-center cursor-pointer">
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        </svg>
+                        <span>Gunakan GPS Saya</span>
+                    </button>
+                </div>
+                <input type="text" id="report-address" required
+                       placeholder="Contoh: Jl. Sisingamangaraja No. 45, samping kantor camat Balige"
+                       class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
+                
+                <!-- Quick Location Preset Buttons for Toba Sub-districts -->
+                <div class="flex items-center gap-1.5 flex-wrap pt-1 text-[11px] text-slate-500">
+                    <span class="text-slate-400">Pilih Cepat:</span>
+                    <button type="button" onclick="setPresetLocation('Balige', 2.3354, 99.0628)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Balige</button>
+                    <button type="button" onclick="setPresetLocation('Porsea', 2.4501, 99.1412)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Porsea</button>
+                    <button type="button" onclick="setPresetLocation('Laguboti', 2.3789, 99.1178)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Laguboti</button>
+                    <button type="button" onclick="setPresetLocation('Silaen', 2.3850, 99.1920)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Silaen</button>
+                </div>
+
+                <div class="flex items-center space-x-2 text-[11px] text-slate-400 font-mono pt-1">
+                    <span>Koordinat:</span>
+                    <span id="coords-display">2.3354, 99.0628 (Kabupaten Toba)</span>
+                    <input type="hidden" id="report-lat" value="2.3354">
+                    <input type="hidden" id="report-lng" value="99.0628">
+                </div>
+            </div>
+
+            <div class="pt-4 flex items-center justify-between border-t border-slate-100">
+                <button type="button" onclick="goToStep(1)"
+                        class="px-5 py-2.5 rounded-full border border-slate-200 font-semibold text-xs text-slate-600 hover:bg-slate-50 transition cursor-pointer">
+                    Kembali
+                </button>
+                <button type="button" onclick="goToStep(3)"
+                        class="px-6 py-2.5 rounded-full font-bold text-white text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 shadow-xs transition cursor-pointer flex items-center">
+                    <span>Tinjau Laporan</span>
+                    <svg class="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 3: REVIEW & SUBMIT -->
+        <div id="step-content-3" class="hidden bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-2xs space-y-5">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                <div class="flex items-start space-x-4">
+                    <img id="review-img" src="" alt="Bukti" class="w-20 h-20 rounded-xl object-cover border border-slate-200 shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <span id="review-category" class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">Kategori</span>
+                        <h3 id="review-title" class="text-sm font-bold text-slate-900 mt-1 line-clamp-2">Judul Laporan</h3>
+                        <p id="review-address" class="text-xs text-slate-500 mt-0.5 line-clamp-1">Alamat Lokasi</p>
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-slate-200/60 text-xs text-slate-600 leading-relaxed">
+                    <strong class="text-slate-800">Deskripsi:</strong>
+                    <p id="review-desc" class="mt-0.5 text-slate-600 line-clamp-3"></p>
+                </div>
+            </div>
+
+            <!-- Transparency Disclaimer -->
+            <div class="p-3.5 rounded-2xl bg-sky-50 border border-sky-200 text-sky-900 text-xs flex items-start space-x-2.5">
+                <svg class="w-4 h-4 text-sky-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="leading-relaxed">
+                    Laporan akan dianalisis secara otomatis oleh sistem AI untuk mendeteksi tingkat keparahan, kemudian diverifikasi langsung oleh Admin Dinas Pemkab Toba sebelum ditugaskan ke petugas lapangan.
+                </div>
+            </div>
+
+            <div class="pt-2 flex items-center justify-between border-t border-slate-100">
+                <button type="button" onclick="goToStep(2)"
+                        class="px-5 py-2.5 rounded-full border border-slate-200 font-semibold text-xs text-slate-600 hover:bg-slate-50 transition cursor-pointer">
+                    Ubah Data
+                </button>
+                <button type="button" id="btn-submit-report" onclick="submitFinalReport()"
+                        class="px-8 py-3 rounded-full font-bold text-white text-xs sm:text-sm shadow-lg shadow-orange-500/25 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition cursor-pointer flex items-center space-x-2">
+                    <span id="btn-submit-text">Kirim Laporan Resmi</span>
+                    <svg id="btn-submit-spinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@push('scripts')
+<script>
+    let uploadedImageId = null;
+    let uploadedImageUrl = null;
+    let currentStep = 1;
+    let categoriesList = [];
+
+    async function loadCategoriesDropdown() {
+        const select = document.getElementById('report-category');
+        if (select && select.options.length > 1 && categoriesList.length === 0) {
+            categoriesList = Array.from(select.options)
+                .filter(opt => opt.value)
+                .map(opt => ({ id: parseInt(opt.value), name: opt.textContent.trim() }));
+        }
+
+        try {
+            const res = await fetch('/api/v1/categories', {
+                headers: { 'Accept': 'application/json' }
+            });
+            const data = await res.json();
+            const items = data.items || data.categories || data.data || (Array.isArray(data) ? data : []);
+            if (items && items.length > 0) {
+                categoriesList = items;
+                const currentVal = select.value;
+                select.innerHTML = '<option value="">-- Pilih Kategori Kerusakan --</option>' +
+                    items.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                if (currentVal) select.value = currentVal;
+            }
+        } catch (err) {
+            console.warn('Gagal memuat kategori via API:', err);
+            if (select && select.options.length <= 1) {
+                const fallbacks = [
+                    { id: 1, name: 'Jalan Rusak' },
+                    { id: 2, name: 'Sampah' },
+                    { id: 3, name: 'Lampu Jalan Rusak' },
+                    { id: 4, name: 'Drainase Rusak' },
+                    { id: 5, name: 'Fasilitas Umum Rusak' },
+                    { id: 6, name: 'Lainnya / Tidak Teridentifikasi' }
+                ];
+                categoriesList = fallbacks;
+                select.innerHTML = '<option value="">-- Pilih Kategori Kerusakan --</option>' +
+                    fallbacks.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            }
+        }
+    }
+
+    async function handlePhotoSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Instant local preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById('photo-preview-img').src = e.target.result;
+            document.getElementById('photo-preview-name').textContent = file.name;
+            document.getElementById('photo-upload-status').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5 animate-pulse"></span> Mengunggah foto ke server...';
+            document.getElementById('photo-preview-box').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+
+        try {
+            const token = TobaCare.getToken();
+            const res = await fetch('/api/v1/reports/images', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.error?.message || 'Gagal mengunggah foto.');
+
+            uploadedImageId = data.image_id;
+            uploadedImageUrl = data.url;
+
+            document.getElementById('photo-upload-status').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Foto Berhasil Terunggah';
+            document.getElementById('btn-next-1').disabled = false;
+            TobaCare.toast('Foto berhasil diunggah!', 'success');
+
+        } catch (err) {
+            TobaCare.toast(err.message || 'Gagal memproses foto.', 'error');
+            document.getElementById('photo-upload-status').innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5"></span> ${err.message}`;
+            document.getElementById('btn-next-1').disabled = true;
+        }
+    }
+
+    function removePhoto() {
+        uploadedImageId = null;
+        uploadedImageUrl = null;
+        document.getElementById('photo-input').value = '';
+        document.getElementById('photo-preview-box').classList.add('hidden');
+        document.getElementById('btn-next-1').disabled = true;
+    }
+
+    function setPresetLocation(name, lat, lng) {
+        document.getElementById('report-address').value = 'Kecamatan ' + name + ', Kabupaten Toba';
+        document.getElementById('report-lat').value = lat;
+        document.getElementById('report-lng').value = lng;
+        document.getElementById('coords-display').textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)} (${name})`;
+        TobaCare.toast('Lokasi disetel ke ' + name, 'info');
+    }
+
+    function detectGPSLocation() {
+        if (!navigator.geolocation) {
+            TobaCare.toast('Geolokasi tidak didukung oleh browser Anda.', 'warning');
+            return;
+        }
+
+        TobaCare.toast('Mencari titik koordinat GPS...', 'info');
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                document.getElementById('report-lat').value = lat;
+                document.getElementById('report-lng').value = lng;
+                document.getElementById('coords-display').textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)} (GPS Akurat)`;
+                if (!document.getElementById('report-address').value) {
+                    document.getElementById('report-address').value = 'Titik GPS Warga (' + lat.toFixed(4) + ', ' + lng.toFixed(4) + ')';
+                }
+                TobaCare.toast('Koordinat GPS berhasil diperoleh!', 'success');
+            },
+            (err) => {
+                TobaCare.toast('Tidak dapat mengakses GPS. Silakan gunakan tombol preset atau ketik alamat.', 'warning');
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    }
+
+    function goToStep(step) {
+        if (step === 2 && !uploadedImageId) {
+            TobaCare.toast('Silakan pilih dan unggah foto bukti terlebih dahulu.', 'warning');
+            return;
+        }
+
+        if (step === 3) {
+            const title = document.getElementById('report-title').value.trim();
+            const desc = document.getElementById('report-desc').value.trim();
+            const cat = document.getElementById('report-category').value;
+            const addr = document.getElementById('report-address').value.trim();
+
+            if (title.length < 5) {
+                TobaCare.toast('Judul laporan minimal 5 karakter.', 'warning');
+                return;
+            }
+            if (desc.length < 20) {
+                TobaCare.toast('Deskripsi masalah minimal 20 karakter.', 'warning');
+                return;
+            }
+            if (!cat) {
+                TobaCare.toast('Silakan pilih kategori masalah.', 'warning');
+                return;
+            }
+            if (!addr) {
+                TobaCare.toast('Alamat atau patokan lokasi wajib diisi.', 'warning');
+                return;
+            }
+
+            // Fill Step 3 review
+            const select = document.getElementById('report-category');
+            const catObj = categoriesList.find(c => c.id == cat);
+            const catLabel = catObj ? catObj.name : (select.options[select.selectedIndex]?.text || 'Kategori Terpilih');
+            document.getElementById('review-img').src = uploadedImageUrl || document.getElementById('photo-preview-img').src;
+            document.getElementById('review-title').textContent = title;
+            document.getElementById('review-desc').textContent = desc;
+            document.getElementById('review-category').textContent = catLabel;
+            document.getElementById('review-address').textContent = addr;
+        }
+
+        currentStep = step;
+        document.getElementById('step-content-1').classList.toggle('hidden', step !== 1);
+        document.getElementById('step-content-2').classList.toggle('hidden', step !== 2);
+        document.getElementById('step-content-3').classList.toggle('hidden', step !== 3);
+
+        // Update step titles
+        const titles = {
+            1: ['Unggah Foto Bukti Kerusakan', 'Ambil foto jelas di lokasi kejadian.'],
+            2: ['Detail Masalah & Lokasi', 'Lengkapi informasi agar dinas dan petugas dapat menuju titik lokasi.'],
+            3: ['Tinjau & Konfirmasi Laporan', 'Periksa kembali data Anda sebelum diteruskan ke admin dinas.']
+        };
+        document.getElementById('wizard-title').textContent = titles[step][0];
+        document.getElementById('wizard-desc').textContent = titles[step][1];
+
+        // Step numbers and lines color
+        document.getElementById('step-label-1').className = step >= 1 ? 'text-rose-600 font-bold flex items-center' : 'text-slate-400 flex items-center';
+        document.getElementById('step-label-2').className = step >= 2 ? 'text-rose-600 font-bold flex items-center' : 'text-slate-400 flex items-center';
+        document.getElementById('step-num-2').className = step >= 2 ? 'w-5 h-5 rounded-full bg-rose-600 text-white flex items-center justify-center text-[10px] mr-1.5' : 'w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] mr-1.5';
+        document.getElementById('step-label-3').className = step >= 3 ? 'text-rose-600 font-bold flex items-center' : 'text-slate-400 flex items-center';
+        document.getElementById('step-num-3').className = step >= 3 ? 'w-5 h-5 rounded-full bg-rose-600 text-white flex items-center justify-center text-[10px] mr-1.5' : 'w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] mr-1.5';
+        document.getElementById('step-line-1').className = step >= 2 ? 'w-8 sm:w-12 h-0.5 bg-rose-600' : 'w-8 sm:w-12 h-0.5 bg-slate-200';
+        document.getElementById('step-line-2').className = step >= 3 ? 'w-8 sm:w-12 h-0.5 bg-rose-600' : 'w-8 sm:w-12 h-0.5 bg-slate-200';
+    }
+
+    async function submitFinalReport() {
+        const btn = document.getElementById('btn-submit-report');
+        const text = document.getElementById('btn-submit-text');
+        const spinner = document.getElementById('btn-submit-spinner');
+
+        btn.disabled = true;
+        text.textContent = 'Mengirim Laporan & Menganalisis...';
+        spinner.classList.remove('hidden');
+
+        try {
+            const payload = {
+                title: document.getElementById('report-title').value.trim(),
+                description: document.getElementById('report-desc').value.trim(),
+                category_id: parseInt(document.getElementById('report-category').value),
+                image_ids: [uploadedImageId],
+                location: {
+                    lat: parseFloat(document.getElementById('report-lat').value) || 2.3354,
+                    lng: parseFloat(document.getElementById('report-lng').value) || 99.0628,
+                    address: document.getElementById('report-address').value.trim(),
+                }
+            };
+
+            const data = await TobaCare.api('/api/v1/reports', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+
+            TobaCare.toast('Laporan berhasil dikirim! Sistem AI sedang memproses awal.', 'success');
+            setTimeout(() => {
+                window.location.href = '/citizen/reports';
+            }, 800);
+
+        } catch (err) {
+            TobaCare.toast(err.message || 'Gagal mengirim laporan.', 'error');
+            btn.disabled = false;
+            text.textContent = 'Kirim Laporan Resmi';
+            spinner.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCategoriesDropdown();
+    });
+</script>
+@endpush
+@endsection

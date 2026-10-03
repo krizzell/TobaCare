@@ -80,13 +80,94 @@ class ReportController extends Controller
         ], 201);
     }
 
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $isPublicExplore = $request->boolean('public', false);
+
+        $query = Report::query()->with([
+            'location',
+            'category',
+            'images',
+            'statusHistory',
+            'activeAssignment.operator',
+        ]);
+
+        if ($isPublicExplore) {
+            // Public explore reports (verified, assigned, in_progress, resolved)
+            $query->whereIn('status', ['verified', 'assigned', 'in_progress', 'resolved']);
+        } else {
+            // Citizen's own submitted reports
+            $query->where('user_id', $user->id);
+        }
+
+        if ($status = $request->query('status')) {
+            $query->where('status', $status);
+        }
+
+        if ($category = $request->query('category_id')) {
+            $query->where('category_id', $category);
+        }
+
+        if ($search = $request->query('q')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'ilike', "%{$search}%")
+                  ->orWhere('description', 'ilike', "%{$search}%");
+            });
+        }
+
+        $reports = $query->latest('created_at')->paginate($request->integer('per_page', 10));
+
+        // Mask citizen name for privacy per FR-13
+        $items = collect($reports->items())->map(function ($r) use ($user, $isPublicExplore) {
+            $arr = $r->toArray();
+            if ($isPublicExplore && $r->user_id !== $user->id) {
+                $arr['reporter_masked'] = 'Warga (Disamarkan)';
+            } else {
+                $arr['reporter_masked'] = $user->name;
+            }
+            return $arr;
+        });
+
+        $stats = [
+            'total'       => Report::where('user_id', $user->id)->count(),
+            'pending'     => Report::where('user_id', $user->id)->whereIn('status', ['submitted', 'ai_analysis', 'pending_verification'])->count(),
+            'in_progress' => Report::where('user_id', $user->id)->whereIn('status', ['verified', 'assigned', 'in_progress'])->count(),
+            'resolved'    => Report::where('user_id', $user->id)->where('status', 'resolved')->count(),
+        ];
+
+        return response()->json([
+            'data'  => $items,
+            'meta'  => [
+                'current_page' => $reports->currentPage(),
+                'last_page'    => $reports->lastPage(),
+                'per_page'     => $reports->perPage(),
+                'total'        => $reports->total(),
+            ],
+            'stats' => $stats,
+        ]);
+    }
+
     public function show(Request $request, string $id)
     {
-        $report = Report::with(['location', 'images', 'category', 'statusHistory', 'analyses.classifications'])
-            ->findOrFail($id);
+        $report = Report::with([
+            'location',
+            'images',
+            'category',
+            'statusHistory.user',
+            'analyses.classifications',
+            'activeAssignment.operator'
+        ])->findOrFail($id);
 
         $role = $request->user()->role->name;
-        abort_unless($report->user_id === $request->user()->id || in_array($role, ['admin', 'operator'], true), 403);
+        $isPubliclyVisible = in_array($report->status, ['verified', 'assigned', 'in_progress', 'resolved'], true);
+
+        abort_unless(
+            $report->user_id === $request->user()->id 
+            || in_array($role, ['admin', 'operator'], true)
+            || $isPubliclyVisible, 
+            403
+        );
 
         return response()->json(['report' => $report]);
     }

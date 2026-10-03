@@ -11,5 +11,15 @@ class Location extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['report_id', 'latitude', 'longitude', 'address_text', 'region'];
+    protected $fillable = ['report_id', 'latitude', 'longitude', 'address_text', 'region', 'nearby_poi'];
+
+    protected $casts = [
+        'latitude'  => 'float',
+        'longitude' => 'float',
+    ];
+
+    public function report()
+    {
+        return $this->belongsTo(Report::class);
+    }
 }

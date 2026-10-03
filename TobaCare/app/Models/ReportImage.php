@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class ReportImage extends Model
 {
@@ -17,4 +18,15 @@ class ReportImage extends Model
     ];
 
     protected $casts = ['quality_flags' => 'array'];
+
+    protected $appends = ['url'];
+
+    public function getUrlAttribute(): ?string
+    {
+        if (! $this->storage_key) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->storage_key);
+    }
 }

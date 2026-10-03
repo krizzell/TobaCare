@@ -11,8 +11,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasUuids, Notifiable;
 
-    protected $fillable = ['role_id', 'agency_id', 'name', 'email', 'password_hash'];
+    protected $fillable = ['role_id', 'agency_id', 'name', 'email', 'password_hash', 'is_active'];
     protected $hidden = ['password_hash'];
+    protected $casts = ['is_active' => 'boolean'];
 
     public function getAuthPassword()
     {
@@ -22,5 +23,10 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
     }
 }

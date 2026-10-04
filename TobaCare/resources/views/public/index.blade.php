@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'TobaCare Ã¢â‚¬â€ Portal Aspirasi & Transparansi Perbaikan Fasilitas Publik Kab. Toba')
+@section('title', 'TobaCare — Portal Aspirasi & Transparansi Perbaikan Fasilitas Publik Kab. Toba')
 
 @section('body')
 <div class="min-h-screen bg-[#F8FAFC] flex flex-col antialiased text-slate-800 selection:bg-rose-500 selection:text-white">
@@ -85,7 +85,7 @@
                 <!-- Institutional Badge -->
                 <div class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200/80 text-rose-700 text-xs font-semibold shadow-2xs">
                     <span class="w-2 h-2 rounded-full bg-rose-500 mr-2 animate-ping"></span>
-                    Pemerintah Kabupaten Toba Ã¢â‚¬â€ Portal Pelayanan Aspirasi Terpadu
+                    Pemerintah Kabupaten Toba — Portal Pelayanan Aspirasi Terpadu
                 </div>
 
                 <!-- Main Hero Headline -->
@@ -421,13 +421,13 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-6">
                 <div class="flex items-center space-x-3">
                     <img src="{{ asset('images/tobacare-logo.png') }}" alt="TobaCare" class="w-16 h-12 object-contain object-center">
-                    <span class="text-base font-bold text-slate-800">TobaCare Ã¢â‚¬â€ Transparansi Fasilitas Publik</span>
+                    <span class="text-base font-bold text-slate-800">TobaCare — Transparansi Fasilitas Publik</span>
                 </div>
                 <div class="flex items-center space-x-4 text-xs font-semibold text-slate-500">
                     <a href="/login" class="hover:text-slate-900 transition">Login Petugas / Admin</a>
-                    <span>Ã‚Â·</span>
+                    <span>·</span>
                     <a href="#tujuan" class="hover:text-slate-900 transition">Tentang Kami</a>
-                    <span>Ã‚Â·</span>
+                    <span>·</span>
                     <a href="#fasilitas-selesai" class="hover:text-slate-900 transition">Galeri Perbaikan</a>
                 </div>
             </div>

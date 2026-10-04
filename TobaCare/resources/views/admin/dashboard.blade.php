@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Overview & Monitoring Ã¢â‚¬â€ TobaCare')
+@section('title', 'Overview & Monitoring — TobaCare')
 
 @section('content')
 <div class="space-y-6">
@@ -9,7 +9,7 @@
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-2xs">
         <div>
             <h1 class="text-2xl font-bold tracking-tight text-slate-900 flex items-center">
-                Halo Admin Dinas <span class="ml-2 inline-block animate-bounce">Ã°Å¸â€˜â€¹</span>
+                Halo Admin Dinas <span class="ml-2 inline-block animate-bounce">👋</span>
             </h1>
             <p class="text-sm text-slate-500 mt-1">
                 Pantau aspirasi warga, efisiensi penanganan, dan akurasi triase AI di Kabupaten Toba.
@@ -22,7 +22,7 @@
                 <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span id="date-range-label">1 Okt 2026 Ã¢â‚¬â€œ 10 Okt 2026</span>
+                <span id="date-range-label">1 Okt 2026 – 10 Okt 2026</span>
             </div>
 
             <!-- Export Button (Emerald green like reference) -->
@@ -209,7 +209,7 @@
         <div class="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-bold text-slate-900">Penanganan per Instansi</h2>
-                <button type="button" class="text-slate-400 hover:text-slate-600 font-bold tracking-widest text-sm">Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢</button>
+                <button type="button" class="text-slate-400 hover:text-slate-600 font-bold tracking-widest text-sm">•••</button>
             </div>
 
             <!-- Stacked Bar Chart Graphic -->
@@ -271,7 +271,7 @@
         <div class="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-bold text-slate-900">Distribusi Kategori</h2>
-                <button type="button" class="text-slate-400 hover:text-slate-600 font-bold tracking-widest text-sm">Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢</button>
+                <button type="button" class="text-slate-400 hover:text-slate-600 font-bold tracking-widest text-sm">•••</button>
             </div>
 
             <!-- Modern Donut Graphic with SVG & Callout Badges -->

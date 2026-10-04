@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Akun Ã¢â‚¬â€ TobaCare')
+@section('title', 'Daftar Akun — TobaCare')
 
 @section('body')
 <div class="min-h-screen bg-[#ecebe8] text-slate-800 flex items-center justify-center p-3 sm:p-6 lg:p-10 antialiased selection:bg-rose-500 selection:text-white">
@@ -17,7 +17,7 @@
             <!-- Top Tagline -->
             <div class="relative z-10">
                 <p class="text-xs sm:text-sm font-light text-slate-300/80 tracking-wide">
-                    Sistem Pelayanan Terpadu & Aspirasi Publik Ã¢â‚¬â€ Kabupaten Toba
+                    Sistem Pelayanan Terpadu & Aspirasi Publik — Kabupaten Toba
                 </p>
             </div>
 
@@ -206,17 +206,17 @@
                 <div class="mt-8 pt-1 text-center">
                     <p class="text-sm text-slate-500 leading-relaxed">
                         Sudah punya akun?
-                        <a href="/login" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Masuk Sekarang Ã¢â€ â€™</a>
+                        <a href="/login" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Masuk Sekarang →</a>
                     </p>
                 </div>
             </div>
 
             <!-- Footer -->
             <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 pt-4">
-                <span>&copy; 2026 TobaCare Ã‚Â· Pemkab Toba</span>
+                <span>&copy; 2026 TobaCare · Pemkab Toba</span>
                 <div class="flex items-center space-x-4">
                     <a href="mailto:kontak@tobacare.test" class="hover:text-slate-600 transition">Contact Us</a>
-                    <span class="text-slate-300">Ã‚Â·</span>
+                    <span class="text-slate-300">·</span>
                     <span class="text-slate-500">Bahasa Indonesia</span>
                 </div>
             </div>

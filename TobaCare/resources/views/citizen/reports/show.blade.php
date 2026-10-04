@@ -1,6 +1,6 @@
 @extends('layouts.citizen')
 
-@section('title', 'Detail Aspirasi & Progres Ã¢â‚¬â€ TobaCare')
+@section('title', 'Detail Aspirasi & Progres — TobaCare')
 
 @section('content')
 <div class="space-y-6 max-w-5xl mx-auto">
@@ -67,7 +67,7 @@
                     </svg>
                     Dilaporkan: <strong id="detail-created-at" class="ml-1 text-slate-700 font-semibold">-</strong>
                 </span>
-                <span class="text-slate-300">Ã‚Â·</span>
+                <span class="text-slate-300">·</span>
                 <span class="flex items-center">
                     <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -356,7 +356,7 @@
             r.images.forEach((img, idx) => {
                 const imgCard = document.createElement('div');
                 imgCard.className = 'group relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-4/3 cursor-pointer shadow-2xs hover:shadow-md transition';
-                imgCard.onclick = () => openPhotoModal(img.url, `Foto Bukti #${idx + 1} Ã¢â‚¬â€ ${r.title}`);
+                imgCard.onclick = () => openPhotoModal(img.url, `Foto Bukti #${idx + 1} — ${r.title}`);
                 imgCard.innerHTML = `
                     <img src="${img.url}" alt="Foto Bukti" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">

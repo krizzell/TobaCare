@@ -1,6 +1,6 @@
 @extends('layouts.citizen')
 
-@section('title', 'Buat Laporan Baru Ã¢â‚¬â€ TobaCare')
+@section('title', 'Buat Laporan Baru — TobaCare')
 
 @section('content')
 <div class="max-w-2xl mx-auto space-y-6">
@@ -309,7 +309,7 @@
             document.getElementById('report-lat').value = lat;
             document.getElementById('report-lng').value = lng;
             document.getElementById('coords-display').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            status.textContent = `${village.name}, ${district.name} Ã¢â‚¬â€ koordinat terisi otomatis.`;
+            status.textContent = `${village.name}, ${district.name} — koordinat terisi otomatis.`;
         } catch (error) {
             resetCoordinates();
             status.textContent = 'Koordinat otomatis gagal ditemukan. Silakan pilih desa lain atau coba lagi.';

@@ -74,4 +74,32 @@ class AuthController extends Controller
 
         return response()->noContent();
     }
+
+    public function setPassword(Request $request)
+    {
+        $user = $request->user();
+
+        $data = $request->validate([
+            'current_password' => ['nullable', 'string'],
+            'password' => ['required', 'string', 'min:8', 'max:72', 'confirmed'],
+        ]);
+
+        if ($user->password_login_enabled && (
+            ! isset($data['current_password']) ||
+            ! Hash::check($data['current_password'], $user->password_hash)
+        )) {
+            return response()->json([
+                'error' => ['code' => 'INVALID_CURRENT_PASSWORD', 'message' => 'Password saat ini salah.'],
+            ], 422);
+        }
+
+        $user->forceFill([
+            'password_hash' => Hash::make($data['password']),
+            'password_login_enabled' => true,
+        ])->save();
+
+        return response()->json([
+            'message' => 'Password berhasil disimpan. Sekarang Anda dapat login menggunakan email dan password.',
+        ]);
+    }
 }

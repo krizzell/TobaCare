@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/tobacare-logo.png') }}">
-    <title>@yield('title', 'TobaCare') Ã¢â‚¬â€ Sistem Pengaduan Lingkungan & Fasum</title>
+    <title>@yield('title', 'TobaCare') — Sistem Pengaduan Lingkungan & Fasum</title>
 
     <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

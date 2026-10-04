@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sign In Ã¢â‚¬â€ TobaCare')
+@section('title', 'Sign In — TobaCare')
 
 @section('body')
 <div class="min-h-screen bg-[#ecebe8] text-slate-800 flex items-center justify-center p-3 sm:p-6 lg:p-10 antialiased selection:bg-rose-500 selection:text-white">
@@ -18,7 +18,7 @@
             <!-- Top Tagline -->
             <div class="relative z-10">
                 <p class="text-xs sm:text-sm font-light text-slate-300/80 tracking-wide">
-                    Sistem Pelayanan Terpadu & Aspirasi Publik Ã¢â‚¬â€ Kabupaten Toba
+                    Sistem Pelayanan Terpadu & Aspirasi Publik — Kabupaten Toba
                 </p>
             </div>
 
@@ -108,9 +108,9 @@
             <!-- Bottom Left Badge (Like the small circle badge in reference) -->
             <div class="relative z-10 flex items-center space-x-2 text-xs text-slate-400">
                 <div class="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center text-[10px] text-amber-400 font-bold">
-                    Ã¢Å“â€œ
+                    ✓
                 </div>
-                <span>Pemerintah Kabupaten Toba Ã¢â‚¬â€ Layanan Aspirasi Terpadu</span>
+                <span>Pemerintah Kabupaten Toba — Layanan Aspirasi Terpadu</span>
             </div>
         </div>
 
@@ -217,7 +217,7 @@
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                             </svg>
-                            <span id="btn-text">Sign In</span>
+                            <span id="btn-text">Log In</span>
                             <svg id="btn-spinner" class="hidden animate-spin ml-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -248,7 +248,7 @@
                 <div class="mt-8 pt-1 text-center">
                     <p class="text-sm text-slate-500 leading-relaxed">
                         Belum punya akun?
-                        <a href="/register" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Daftar Sekarang Ã¢â€ â€™</a>
+                        <a href="/register" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Daftar Sekarang →</a>
                     </p>
                 </div>
 
@@ -277,10 +277,10 @@
 
             <!-- Footer: Copyright & Contact Links (Matching reference) -->
             <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 pt-4">
-                <span>&copy; 2026 TobaCare Ã‚Â· Pemkab Toba</span>
+                <span>&copy; 2026 TobaCare · Pemkab Toba</span>
                 <div class="flex items-center space-x-4">
                     <a href="mailto:kontak@tobacare.test" class="hover:text-slate-600 transition">Contact Us</a>
-                    <span class="text-slate-300">Ã‚Â·</span>
+                    <span class="text-slate-300">·</span>
                     <span class="hover:text-slate-600 cursor-pointer flex items-center">
                         Bahasa Indonesia
                         <svg class="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -349,22 +349,14 @@
         btnSpinner.classList.remove('hidden');
 
         try {
-            let data;
-            if (window.TobaCare && typeof window.TobaCare.api === 'function') {
-                data = await window.TobaCare.api('/api/v1/auth/login', {
-                    method: 'POST',
-                    body: JSON.stringify({ email, password })
-                });
-            } else {
-                const res = await fetch('/api/v1/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-                data = await res.json();
-                if (!res.ok) {
-                    throw new Error(data?.message || data?.error?.message || 'Kredensial tidak valid.');
-                }
+            const res = await fetch('/api/v1/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data?.message || data?.error?.message || 'Kredensial tidak valid.');
             }
 
             if (window.TobaCare && typeof window.TobaCare.setAuth === 'function') {
@@ -419,7 +411,10 @@
                 })
                 .then(data => {
                     window.TobaCare.setAuth(data.token, data.user);
-                    const target = urlParams.get('redirect') || '/citizen/reports';
+                    let target = urlParams.get('redirect') || '/citizen/reports';
+                    if (data.user?.role?.name === 'user' && data.user?.password_login_enabled === false) {
+                        target += (target.includes('?') ? '&' : '?') + 'setup_password=1';
+                    }
                     window.location.replace(target);
                 })
                 .catch(error => {

@@ -56,6 +56,7 @@ class GoogleAuthController extends Controller
                 'email'         => Str::lower($googleUser->getEmail()),
                 'password_hash' => Hash::make(Str::random(64)),
                 'google_id'     => $googleUser->getId(),
+                'password_login_enabled' => false,
                 'is_active'     => true,
             ]);
         } else {

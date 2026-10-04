@@ -13,21 +13,7 @@
                 <!-- Brand Emblem & Logo -->
                 <div class="flex items-center space-x-3">
                     <a href="/" class="flex items-center space-x-3">
-                        <svg class="w-9 h-9" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="15" stroke="url(#brand-ring-pub)" stroke-width="4.5" />
-                            <defs>
-                                <linearGradient id="brand-ring-pub" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#FF512F" />
-                                    <stop offset="35%" stop-color="#F09819" />
-                                    <stop offset="70%" stop-color="#10B981" />
-                                    <stop offset="100%" stop-color="#06B6D4" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <div>
-                            <span class="text-xl font-extrabold tracking-tight text-slate-900 block leading-tight">TobaCare</span>
-                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest block">Pemkab Toba</span>
-                        </div>
+                        <img src="{{ asset('images/tobacare-logo.png') }}" alt="TobaCare" class="w-20 h-16 object-contain object-center">
                     </a>
 
                     <!-- Navigation Links -->
@@ -434,15 +420,7 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-6">
                 <div class="flex items-center space-x-3">
-                    <svg class="w-7 h-7" viewBox="0 0 40 40" fill="none">
-                        <circle cx="20" cy="20" r="15" stroke="url(#footer-brand-ring)" stroke-width="4.5" />
-                        <defs>
-                            <linearGradient id="footer-brand-ring" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FF512F" />
-                                <stop offset="100%" stop-color="#06B6D4" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                    <img src="{{ asset('images/tobacare-logo.png') }}" alt="TobaCare" class="w-16 h-12 object-contain object-center">
                     <span class="text-base font-bold text-slate-800">TobaCare — Transparansi Fasilitas Publik</span>
                 </div>
                 <div class="flex items-center space-x-4 text-xs font-semibold text-slate-500">

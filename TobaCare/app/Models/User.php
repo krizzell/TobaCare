@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasUuids, Notifiable;
 
-    protected $fillable = ['role_id', 'agency_id', 'name', 'email', 'password_hash', 'is_active'];
+    protected $fillable = ['role_id', 'agency_id', 'name', 'email', 'password_hash', 'google_id', 'is_active'];
     protected $hidden = ['password_hash'];
     protected $casts = ['is_active' => 'boolean'];
 

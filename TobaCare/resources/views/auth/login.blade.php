@@ -119,20 +119,9 @@
             
             <!-- Top Header: Brand Logo + Sign Up link -->
             <div class="flex items-center justify-between">
-                <!-- Brand with Multi-color ring emblem (Like Payoneer ring) -->
-                <div class="flex items-center space-x-2.5">
-                    <svg class="w-7 h-7" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="20" cy="20" r="15" stroke="url(#brand-ring)" stroke-width="4.5" />
-                        <defs>
-                            <linearGradient id="brand-ring" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FF512F" />
-                                <stop offset="35%" stop-color="#F09819" />
-                                <stop offset="70%" stop-color="#10B981" />
-                                <stop offset="100%" stop-color="#06B6D4" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <span class="text-xl font-bold tracking-tight text-slate-900">TobaCare</span>
+                <!-- Primary brand logo -->
+                <div class="flex items-center">
+                    <img src="{{ asset('images/tobacare-logo.png') }}" alt="TobaCare" class="w-20 h-16 object-contain object-center">
                 </div>
 
                 <!-- Home & Bantuan Links -->
@@ -154,7 +143,7 @@
             <!-- Center Form Area -->
             <div class="my-auto py-6 sm:py-8 max-w-sm w-full mx-auto">
                 <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 mb-6">
-                    Sign In
+                    Log In
                 </h2>
 
                 <!-- Notice banner when redirected from "Laporkan Keluhanmu" -->
@@ -164,6 +153,16 @@
                     </svg>
                     <div class="leading-relaxed font-medium">
                         Silakan masuk terlebih dahulu untuk mengisi formulir pengaduan. Setelah masuk, Anda akan langsung diarahkan ke form pelaporan.
+                    </div>
+                </div>
+
+                <!-- Success banner when just registered -->
+                <div id="registered-banner" class="hidden mb-6 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs sm:text-sm flex items-start space-x-2.5 shadow-2xs">
+                    <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div class="leading-relaxed font-medium">
+                        Akun berhasil dibuat! Silakan masuk menggunakan email dan password yang telah kamu buat.
                     </div>
                 </div>
 
@@ -227,8 +226,34 @@
                     </div>
                 </form>
 
+                <div class="mt-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="h-px flex-1 bg-slate-200"></div>
+                        <span class="text-xs font-medium text-slate-400 whitespace-nowrap">atau masuk dengan</span>
+                        <div class="h-px flex-1 bg-slate-200"></div>
+                    </div>
+                    <a href="{{ route('google.redirect') }}"
+                       class="w-full py-3.5 px-6 rounded-full border border-slate-200 bg-white text-slate-800 font-semibold shadow-sm hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200/70 transition flex items-center justify-center gap-3 text-sm">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/>
+                            <path fill="#34A853" d="M12 21.99c2.63 0 4.84-.87 6.45-2.34l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.99Z"/>
+                            <path fill="#FBBC05" d="M6.54 14.09a5.86 5.86 0 0 1 0-3.78V7.78H3.3a9.73 9.73 0 0 0 0 8.84l3.24-2.53Z"/>
+                            <path fill="#EA4335" d="M12 6.28c1.43 0 2.71.49 3.72 1.46l2.79-2.79C16.84 3.37 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.7 5.28l3.24 2.53C7.31 8 9.46 6.28 12 6.28Z"/>
+                        </svg>
+                        <span>Lanjutkan dengan Google</span>
+                    </a>
+                </div>
+
+                <!-- Register link -->
+                <div class="mt-8 pt-1 text-center">
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Belum punya akun?
+                        <a href="/register" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Daftar Sekarang →</a>
+                    </p>
+                </div>
+
                 <!-- Subtle Demo Account Switcher for Evaluator/Reviewer -->
-                <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+                <div class="mt-5 pt-5 border-t border-slate-100 text-center">
                     <p class="text-[11px] font-medium uppercase tracking-wider text-slate-400 mb-2.5">
                         Pilih Kredensial Uji Coba:
                     </p>
@@ -373,10 +398,41 @@
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const redirectParam = urlParams.get('redirect');
-        
+
+        const googleCode = urlParams.get('google_code');
+        if (googleCode) {
+            fetch('/api/v1/auth/google/exchange', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ code: googleCode })
+            })
+                .then(async response => {
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data?.error?.message || 'Login Google gagal.');
+                    return data;
+                })
+                .then(data => {
+                    window.TobaCare.setAuth(data.token, data.user);
+                    const target = urlParams.get('redirect') || '/citizen/reports';
+                    window.location.replace(target);
+                })
+                .catch(error => {
+                    showAlert(error.message);
+                });
+        }
+
         // Show notice banner if redirected from reporting CTA
         if (redirectParam) {
             const banner = document.getElementById('redirect-banner');
+            if (banner) banner.classList.remove('hidden');
+        }
+
+        // Show success banner if just registered
+        if (urlParams.get('registered') === '1') {
+            const banner = document.getElementById('registered-banner');
             if (banner) banner.classList.remove('hidden');
         }
 

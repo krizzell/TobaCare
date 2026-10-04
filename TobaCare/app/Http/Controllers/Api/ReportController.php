@@ -24,6 +24,7 @@ class ReportController extends Controller
             'location.lat'     => ['required', 'numeric', 'between:-90,90'],
             'location.lng'     => ['required', 'numeric', 'between:-180,180'],
             'location.address' => ['nullable', 'string', 'max:255'],
+            'location.region'  => ['nullable', 'string', 'max:255'],
             'image_ids'        => ['required', 'array', 'min:1', 'max:3'],
             'image_ids.*'      => ['uuid', 'distinct'],
         ]);
@@ -58,6 +59,7 @@ class ReportController extends Controller
                 'latitude'     => $data['location']['lat'],
                 'longitude'    => $data['location']['lng'],
                 'address_text' => $data['location']['address'] ?? null,
+                'region'      => $data['location']['region'] ?? null,
             ]);
 
             foreach ($images->values() as $i => $image) {

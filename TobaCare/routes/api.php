@@ -9,13 +9,20 @@ use App\Http\Controllers\Api\Operator\OperatorReportController;
 use App\Http\Controllers\Api\PublicFacilityController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ReportImageController;
+use App\Http\Controllers\Api\RegionController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:10,1');
+    Route::post('auth/google/exchange', [GoogleAuthController::class, 'exchange'])->middleware('throttle:10,1');
     Route::post('auth/login',    [AuthController::class, 'login'])->middleware('throttle:5,1');
 
     // Public showcase endpoints (no auth required)
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::get('regions/districts', [RegionController::class, 'districts']);
+    Route::get('regions/villages/{district}', [RegionController::class, 'villages']);
+    Route::get('regions/geocode', [RegionController::class, 'geocode']);
     Route::get('public/resolved-facilities',      [PublicFacilityController::class, 'index']);
     Route::get('public/resolved-facilities/{id}', [PublicFacilityController::class, 'show'])->whereUuid('id');
 
@@ -25,9 +32,6 @@ Route::prefix('v1')->group(function () {
 
         // sementara, untuk menguji pembatasan role
         Route::get('admin/ping', fn () => ['ok' => true])->middleware('role:admin');
-
-        // Dropdown kategori untuk pelaporan dan verifikasi
-        Route::get('categories', [CategoryController::class, 'index']);
 
         // User report endpoints
         Route::get('citizen/reports', [ReportController::class, 'index'])->middleware(['role:user']);

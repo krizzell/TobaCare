@@ -11,11 +11,7 @@
             <!-- Brand Logo Header -->
             <div class="flex items-center justify-between px-2">
                 <a href="/admin/dashboard" class="flex items-center space-x-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
+                    <img src="{{ asset('images/tobacare-logo.png') }}" alt="TobaCare" class="w-16 h-12 object-contain object-center">
                     <div>
                         <span class="text-base font-extrabold tracking-tight text-slate-900">TobaCare</span>
                         <span class="text-[10px] block font-semibold text-emerald-600 tracking-wider uppercase -mt-0.5">CIVIC PORTAL</span>

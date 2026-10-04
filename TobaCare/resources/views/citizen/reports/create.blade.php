@@ -143,36 +143,35 @@
 
             <!-- Lokasi & Alamat (FR-04) -->
             <div class="space-y-2">
-                <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-700">
+                    Wilayah Kejadian di Kab. Toba <span class="text-rose-500">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <select id="report-district" required
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
+                        <option value="">Memuat kecamatan...</option>
+                    </select>
+                    <select id="report-village" required disabled
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 bg-white disabled:bg-slate-50 disabled:text-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
+                        <option value="">Pilih kecamatan terlebih dahulu</option>
+                    </select>
+                </div>
+                <p id="region-status" class="text-[11px] text-slate-400">Pilih kecamatan lalu desa/kelurahan untuk mengisi koordinat otomatis.</p>
+
+                <div class="flex items-center pt-2">
                     <label for="report-address" class="block text-xs font-bold text-slate-700">
-                        Alamat / Patokan Lokasi di Kab. Toba <span class="text-rose-500">*</span>
+                        Deskripsi Alamat / Patokan <span class="text-rose-500">*</span>
                     </label>
-                    <button type="button" onclick="detectGPSLocation()"
-                            class="text-[11px] font-semibold text-rose-600 hover:text-rose-800 flex items-center cursor-pointer">
-                        <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        </svg>
-                        <span>Gunakan GPS Saya</span>
-                    </button>
                 </div>
-                <input type="text" id="report-address" required
-                       placeholder="Contoh: Jl. Sisingamangaraja No. 45, samping kantor camat Balige"
-                       class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
-                
-                <!-- Quick Location Preset Buttons for Toba Sub-districts -->
-                <div class="flex items-center gap-1.5 flex-wrap pt-1 text-[11px] text-slate-500">
-                    <span class="text-slate-400">Pilih Cepat:</span>
-                    <button type="button" onclick="setPresetLocation('Balige', 2.3354, 99.0628)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Balige</button>
-                    <button type="button" onclick="setPresetLocation('Porsea', 2.4501, 99.1412)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Porsea</button>
-                    <button type="button" onclick="setPresetLocation('Laguboti', 2.3789, 99.1178)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Laguboti</button>
-                    <button type="button" onclick="setPresetLocation('Silaen', 2.3850, 99.1920)" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 border border-slate-200">Silaen</button>
-                </div>
+                <textarea id="report-address" required maxlength="255" rows="2"
+                          placeholder="Contoh: Jl. Sisingamangaraja No. 45, samping kantor camat"
+                          class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"></textarea>
 
                 <div class="flex items-center space-x-2 text-[11px] text-slate-400 font-mono pt-1">
                     <span>Koordinat:</span>
-                    <span id="coords-display">2.3354, 99.0628 (Kabupaten Toba)</span>
-                    <input type="hidden" id="report-lat" value="2.3354">
-                    <input type="hidden" id="report-lng" value="99.0628">
+                    <span id="coords-display">Belum dipilih</span>
+                    <input type="hidden" id="report-lat">
+                    <input type="hidden" id="report-lng">
                 </div>
             </div>
 
@@ -244,6 +243,85 @@
     let uploadedImageUrl = null;
     let currentStep = 1;
     let categoriesList = [];
+    let districtsList = [];
+    let villagesList = [];
+
+    async function loadTobaRegions() {
+        const districtSelect = document.getElementById('report-district');
+        const villageSelect = document.getElementById('report-village');
+
+        try {
+            const response = await fetch('/api/v1/regions/districts');
+            if (!response.ok) throw new Error('Gagal memuat daftar kecamatan.');
+            const data = await response.json();
+            districtsList = data.data || [];
+            districtSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>' +
+                districtsList.map(item => `<option value="${item.code}">${item.name}</option>`).join('');
+        } catch (error) {
+            districtSelect.innerHTML = '<option value="">Daftar wilayah gagal dimuat</option>';
+            document.getElementById('region-status').textContent = 'Daftar wilayah tidak dapat dimuat. Periksa koneksi lalu muat ulang halaman.';
+            TobaCare.toast(error.message, 'error');
+        }
+    }
+
+    async function loadVillages(districtCode) {
+        const villageSelect = document.getElementById('report-village');
+        villageSelect.disabled = true;
+        villageSelect.innerHTML = '<option value="">Memuat desa/kelurahan...</option>';
+        resetCoordinates();
+
+        if (!districtCode) {
+            villageSelect.innerHTML = '<option value="">Pilih kecamatan terlebih dahulu</option>';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/v1/regions/villages/${encodeURIComponent(districtCode)}`);
+            if (!response.ok) throw new Error('Gagal memuat daftar desa.');
+            const data = await response.json();
+            villagesList = data.data || [];
+            villageSelect.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>' +
+                villagesList.map(item => `<option value="${item.code}">${item.name}</option>`).join('');
+            villageSelect.disabled = false;
+        } catch (error) {
+            villageSelect.innerHTML = '<option value="">Daftar desa gagal dimuat</option>';
+            document.getElementById('region-status').textContent = 'Daftar desa tidak dapat dimuat. Periksa koneksi lalu coba lagi.';
+            TobaCare.toast(error.message, 'error');
+        }
+    }
+
+    async function geocodeVillage() {
+        const district = districtsList.find(item => item.code === document.getElementById('report-district').value);
+        const village = villagesList.find(item => item.code === document.getElementById('report-village').value);
+        if (!district || !village) return;
+
+        const status = document.getElementById('region-status');
+        status.textContent = 'Mencari koordinat desa...';
+
+        try {
+            const params = new URLSearchParams({ district: district.name, village: village.name });
+            const response = await fetch(`/api/v1/regions/geocode?${params.toString()}`);
+            const result = await response.json();
+            if (!response.ok) throw new Error(result?.error?.message || 'Koordinat desa belum ditemukan.');
+
+            const lat = Number(result.lat);
+            const lng = Number(result.lng);
+            document.getElementById('report-lat').value = lat;
+            document.getElementById('report-lng').value = lng;
+            document.getElementById('coords-display').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            status.textContent = `${village.name}, ${district.name} — koordinat terisi otomatis.`;
+        } catch (error) {
+            resetCoordinates();
+            status.textContent = 'Koordinat otomatis gagal ditemukan. Silakan pilih desa lain atau coba lagi.';
+            TobaCare.toast(error.message, 'warning');
+        }
+    }
+
+    function resetCoordinates() {
+        document.getElementById('report-lat').value = '';
+        document.getElementById('report-lng').value = '';
+        document.getElementById('coords-display').textContent = 'Belum dipilih';
+    }
 
     async function loadCategoriesDropdown() {
         const select = document.getElementById('report-category');
@@ -338,37 +416,10 @@
     }
 
     function setPresetLocation(name, lat, lng) {
-        document.getElementById('report-address').value = 'Kecamatan ' + name + ', Kabupaten Toba';
         document.getElementById('report-lat').value = lat;
         document.getElementById('report-lng').value = lng;
         document.getElementById('coords-display').textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)} (${name})`;
         TobaCare.toast('Lokasi disetel ke ' + name, 'info');
-    }
-
-    function detectGPSLocation() {
-        if (!navigator.geolocation) {
-            TobaCare.toast('Geolokasi tidak didukung oleh browser Anda.', 'warning');
-            return;
-        }
-
-        TobaCare.toast('Mencari titik koordinat GPS...', 'info');
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                const lat = pos.coords.latitude;
-                const lng = pos.coords.longitude;
-                document.getElementById('report-lat').value = lat;
-                document.getElementById('report-lng').value = lng;
-                document.getElementById('coords-display').textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)} (GPS Akurat)`;
-                if (!document.getElementById('report-address').value) {
-                    document.getElementById('report-address').value = 'Titik GPS Warga (' + lat.toFixed(4) + ', ' + lng.toFixed(4) + ')';
-                }
-                TobaCare.toast('Koordinat GPS berhasil diperoleh!', 'success');
-            },
-            (err) => {
-                TobaCare.toast('Tidak dapat mengakses GPS. Silakan gunakan tombol preset atau ketik alamat.', 'warning');
-            },
-            { enableHighAccuracy: true, timeout: 10000 }
-        );
     }
 
     function goToStep(step) {
@@ -382,6 +433,10 @@
             const desc = document.getElementById('report-desc').value.trim();
             const cat = document.getElementById('report-category').value;
             const addr = document.getElementById('report-address').value.trim();
+            const district = document.getElementById('report-district').value;
+            const village = document.getElementById('report-village').value;
+            const lat = document.getElementById('report-lat').value;
+            const lng = document.getElementById('report-lng').value;
 
             if (title.length < 5) {
                 TobaCare.toast('Judul laporan minimal 5 karakter.', 'warning');
@@ -395,8 +450,16 @@
                 TobaCare.toast('Silakan pilih kategori masalah.', 'warning');
                 return;
             }
+            if (!district || !village) {
+                TobaCare.toast('Silakan pilih kecamatan dan desa/kelurahan.', 'warning');
+                return;
+            }
             if (!addr) {
-                TobaCare.toast('Alamat atau patokan lokasi wajib diisi.', 'warning');
+                TobaCare.toast('Deskripsi alamat atau patokan wajib diisi.', 'warning');
+                return;
+            }
+            if (!lat || !lng) {
+                TobaCare.toast('Koordinat belum tersedia. Pilih kecamatan dan desa terlebih dahulu.', 'warning');
                 return;
             }
 
@@ -451,9 +514,13 @@
                 category_id: parseInt(document.getElementById('report-category').value),
                 image_ids: [uploadedImageId],
                 location: {
-                    lat: parseFloat(document.getElementById('report-lat').value) || 2.3354,
-                    lng: parseFloat(document.getElementById('report-lng').value) || 99.0628,
+                    lat: parseFloat(document.getElementById('report-lat').value),
+                    lng: parseFloat(document.getElementById('report-lng').value),
                     address: document.getElementById('report-address').value.trim(),
+                    region: [
+                        document.getElementById('report-district').selectedOptions[0]?.text,
+                        document.getElementById('report-village').selectedOptions[0]?.text
+                    ].filter(Boolean).join(', ') + ', Kabupaten Toba',
                 }
             };
 
@@ -477,6 +544,9 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         loadCategoriesDropdown();
+        loadTobaRegions();
+        document.getElementById('report-district').addEventListener('change', (event) => loadVillages(event.target.value));
+        document.getElementById('report-village').addEventListener('change', geocodeVillage);
     });
 </script>
 @endpush

@@ -21,6 +21,20 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## Google registration
+
+The registration page supports signing up with Google through Laravel Socialite. Add
+the OAuth credentials to `.env` before using the Google button:
+
+```env
+GOOGLE_CLIENT_ID=your-client-id
+GOOGLE_CLIENT_SECRET=your-client-secret
+GOOGLE_REDIRECT_URI="${APP_URL}/auth/google/callback"
+```
+
+Register the same callback URL in Google Cloud Console, then run
+`php artisan migrate` to add the Google account identifier column.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.

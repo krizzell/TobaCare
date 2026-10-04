@@ -11,17 +11,7 @@
                 <!-- Brand & Portal Name -->
                 <div class="flex items-center space-x-3">
                     <a href="/" class="flex items-center space-x-2.5 group" title="Kembali ke Beranda Utama">
-                        <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="15" stroke="url(#citizen-brand-ring)" stroke-width="4.5" />
-                            <defs>
-                                <linearGradient id="citizen-brand-ring" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#FF512F" />
-                                    <stop offset="35%" stop-color="#F09819" />
-                                    <stop offset="70%" stop-color="#10B981" />
-                                    <stop offset="100%" stop-color="#06B6D4" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                        <img src="{{ asset('images/tobacare-logo.png') }}" alt="TobaCare" class="w-16 h-12 object-contain object-center">
                         <div>
                             <span class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-rose-600 transition">TobaCare</span>
                             <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded bg-rose-50 text-rose-700 border border-rose-200">Portal Warga</span>

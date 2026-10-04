@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -9,6 +10,13 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
 
 Route::prefix('admin')->group(function () {
     Route::get('/', function () {
@@ -68,4 +76,3 @@ Route::prefix('citizen')->group(function () {
         ]);
     })->whereUuid('id')->name('citizen.reports.show');
 });
-

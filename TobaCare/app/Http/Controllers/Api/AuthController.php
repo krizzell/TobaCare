@@ -40,6 +40,15 @@ class AuthController extends Controller
 
         $user = User::whereRaw('lower(email) = ?', [Str::lower($data['email'])])->first();
 
+        if ($user?->google_id && ! Hash::check($data['password'], $user->password_hash)) {
+            return response()->json([
+                'error' => [
+                    'code' => 'GOOGLE_ACCOUNT',
+                    'message' => 'Akun ini terdaftar melalui Google. Silakan gunakan tombol Lanjutkan dengan Google.',
+                ],
+            ], 401);
+        }
+
         if (! $user || ! $user->is_active || ! Hash::check($data['password'], $user->password_hash)) {
             return response()->json([
                 'error' => ['code' => 'INVALID_CREDENTIALS', 'message' => 'Email atau password salah'],

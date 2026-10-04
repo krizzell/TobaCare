@@ -1,6 +1,6 @@
 @extends('layouts.citizen')
 
-@section('title', 'Detail Aspirasi & Progres — TobaCare')
+@section('title', 'Detail Aspirasi & Progres Ã¢â‚¬â€ TobaCare')
 
 @section('content')
 <div class="space-y-6 max-w-5xl mx-auto">
@@ -67,7 +67,7 @@
                     </svg>
                     Dilaporkan: <strong id="detail-created-at" class="ml-1 text-slate-700 font-semibold">-</strong>
                 </span>
-                <span class="text-slate-300">·</span>
+                <span class="text-slate-300">Ã‚Â·</span>
                 <span class="flex items-center">
                     <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -86,7 +86,7 @@
         <div class="lg:col-span-2 space-y-6">
 
             <!-- Resolution Banner (Shown only when resolved) -->
-            <div id="resolution-banner" class="hidden bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-md">
+            <div id="resolution-banner" class="hidden bg-linear-to-r from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-md">
                 <div class="flex items-start space-x-3">
                     <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -205,7 +205,7 @@
                         <span id="st-step-4">4. Tuntas</span>
                     </div>
                     <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
-                        <div id="stepper-progress-bar" class="bg-gradient-to-r from-orange-500 via-sky-500 to-emerald-500 h-full w-1/4 transition-all duration-500"></div>
+                        <div id="stepper-progress-bar" class="bg-linear-to-r from-orange-500 via-sky-500 to-emerald-500 h-full w-1/4 transition-all duration-500"></div>
                     </div>
                 </div>
 
@@ -239,7 +239,7 @@
             </div>
 
             <!-- Help & Hotline Box -->
-            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white shadow-md space-y-3">
+            <div class="bg-linear-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white shadow-md space-y-3">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-rose-300">
                     Bantuan Terpadu
                 </span>
@@ -356,10 +356,10 @@
             r.images.forEach((img, idx) => {
                 const imgCard = document.createElement('div');
                 imgCard.className = 'group relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-4/3 cursor-pointer shadow-2xs hover:shadow-md transition';
-                imgCard.onclick = () => openPhotoModal(img.url, `Foto Bukti #${idx + 1} — ${r.title}`);
+                imgCard.onclick = () => openPhotoModal(img.url, `Foto Bukti #${idx + 1} Ã¢â‚¬â€ ${r.title}`);
                 imgCard.innerHTML = `
                     <img src="${img.url}" alt="Foto Bukti" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+                    <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
                         <span class="text-[11px] text-white font-medium flex items-center">
                             <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />

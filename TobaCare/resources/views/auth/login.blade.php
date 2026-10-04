@@ -1,24 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Sign In — TobaCare')
+@section('title', 'Sign In Ã¢â‚¬â€ TobaCare')
 
 @section('body')
 <div class="min-h-screen bg-[#ecebe8] text-slate-800 flex items-center justify-center p-3 sm:p-6 lg:p-10 antialiased selection:bg-rose-500 selection:text-white">
     <!-- Main Card Container matching reference layout -->
-    <div class="w-full max-w-[1200px] bg-white rounded-3xl lg:rounded-[2.5rem] shadow-2xl border border-slate-200/70 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[680px]">
+    <div class="w-full max-w-300 bg-white rounded-3xl lg:rounded-[2.5rem] shadow-2xl border border-slate-200/70 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-170">
         
         <!-- LEFT PANE: Dark Brand & Visual Hero (Like Reference) -->
         <div class="lg:col-span-6 xl:col-span-7 bg-[#171412] text-white p-8 sm:p-12 lg:p-14 flex flex-col justify-between relative overflow-hidden">
             <!-- Concentric Circular Radar/Ripple Lines (Exact reference detail) -->
-            <div class="absolute -right-24 top-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full border border-white/[0.05] pointer-events-none"></div>
-            <div class="absolute -right-12 top-1/2 -translate-y-1/2 w-[360px] h-[360px] rounded-full border border-white/[0.07] pointer-events-none"></div>
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[240px] h-[240px] rounded-full border border-white/[0.09] pointer-events-none"></div>
+            <div class="absolute -right-24 top-1/2 -translate-y-1/2 w-120 h-120 rounded-full border border-white/5 pointer-events-none"></div>
+            <div class="absolute -right-12 top-1/2 -translate-y-1/2 w-90 h-90 rounded-full border border-white/7 pointer-events-none"></div>
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-60 h-60 rounded-full border border-white/9 pointer-events-none"></div>
             <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-rose-500/5 blur-3xl pointer-events-none"></div>
 
             <!-- Top Tagline -->
             <div class="relative z-10">
                 <p class="text-xs sm:text-sm font-light text-slate-300/80 tracking-wide">
-                    Sistem Pelayanan Terpadu & Aspirasi Publik — Kabupaten Toba
+                    Sistem Pelayanan Terpadu & Aspirasi Publik Ã¢â‚¬â€ Kabupaten Toba
                 </p>
             </div>
 
@@ -28,7 +28,7 @@
                 <div class="xl:col-span-6 space-y-4">
                     <h1 class="text-3xl sm:text-4xl xl:text-5xl font-extrabold tracking-tight text-white leading-[1.15]">
                         Aspirasi warga,<br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-400 to-rose-300">nyata aksinya</span>
+                        <span class="text-transparent bg-clip-text bg-linear-to-r from-amber-400 via-rose-400 to-rose-300">nyata aksinya</span>
                     </h1>
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
                         Platform pelaporan kerusakan infrastruktur, kebersihan, dan ketertiban umum dengan verifikasi akurat dan tindak lanjut terukur.
@@ -37,7 +37,7 @@
 
                 <!-- Right / Center Phone Mockup (Pixel-perfect recreation of reference visual) -->
                 <div class="xl:col-span-6 flex justify-center relative">
-                    <div class="w-[260px] sm:w-[275px] bg-[#0c0d0f] rounded-[2.2rem] p-2.5 border-[4px] border-[#2c2d33] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] transform -rotate-1 hover:rotate-0 transition-transform duration-500 select-none">
+                    <div class="w-65 sm:w-68.75 bg-[#0c0d0f] rounded-[2.2rem] p-2.5 border-4 border-[#2c2d33] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] transform -rotate-1 hover:rotate-0 transition-transform duration-500 select-none">
                         <!-- Screen -->
                         <div class="bg-[#141519] rounded-[1.7rem] p-3.5 text-white overflow-hidden relative border border-white/10 font-sans">
                             <!-- Dynamic Island Notch -->
@@ -69,7 +69,7 @@
                                     <!-- Highlighted active bar with pill badge -->
                                     <div class="w-full relative flex flex-col items-center">
                                         <span class="absolute -top-4 text-[9px] bg-rose-500 text-white px-1 rounded font-bold shadow">120</span>
-                                        <div class="w-full bg-gradient-to-t from-orange-500 to-rose-500 rounded-t h-14"></div>
+                                        <div class="w-full bg-linear-to-t from-orange-500 to-rose-500 rounded-t h-14"></div>
                                     </div>
                                     <div class="w-full bg-white/80 rounded-t h-[70%]"></div>
                                     <div class="w-full bg-white/80 rounded-t h-[40%]"></div>
@@ -95,7 +95,7 @@
                             <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-around text-slate-500">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                                 <!-- Center multi-color ring -->
-                                <div class="w-4 h-4 rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-rose-500 to-sky-400">
+                                <div class="w-4 h-4 rounded-full p-0.5 bg-linear-to-tr from-amber-400 via-rose-500 to-sky-400">
                                     <div class="w-full h-full bg-[#141519] rounded-full"></div>
                                 </div>
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -108,9 +108,9 @@
             <!-- Bottom Left Badge (Like the small circle badge in reference) -->
             <div class="relative z-10 flex items-center space-x-2 text-xs text-slate-400">
                 <div class="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center text-[10px] text-amber-400 font-bold">
-                    ✓
+                    Ã¢Å“â€œ
                 </div>
-                <span>Pemerintah Kabupaten Toba — Layanan Aspirasi Terpadu</span>
+                <span>Pemerintah Kabupaten Toba Ã¢â‚¬â€ Layanan Aspirasi Terpadu</span>
             </div>
         </div>
 
@@ -147,7 +147,7 @@
                 </h2>
 
                 <!-- Notice banner when redirected from "Laporkan Keluhanmu" -->
-                <div id="redirect-banner" class="hidden mb-6 p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 text-amber-900 text-xs sm:text-sm flex items-start space-x-2.5 shadow-2xs">
+                <div id="redirect-banner" class="hidden mb-6 p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 text-amber-900 text-xs sm:text-sm items-start space-x-2.5 shadow-2xs">
                     <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -157,7 +157,7 @@
                 </div>
 
                 <!-- Success banner when just registered -->
-                <div id="registered-banner" class="hidden mb-6 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs sm:text-sm flex items-start space-x-2.5 shadow-2xs">
+                <div id="registered-banner" class="hidden mb-6 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs sm:text-sm items-start space-x-2.5 shadow-2xs">
                     <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -167,8 +167,8 @@
                 </div>
 
                 <!-- Alert Container for errors -->
-                <div id="login-alert" class="hidden mb-6 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-start space-x-2.5">
-                    <svg class="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div id="login-alert" class="hidden mb-6 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm items-start space-x-2.5">
+                    <svg class="w-4 h-4 text-rose-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div id="login-alert-text" class="leading-relaxed"></div>
@@ -213,7 +213,7 @@
                     <!-- Submit Button (Vibrant gradient pill like reference) -->
                     <div class="pt-2">
                         <button type="submit" id="btn-submit"
-                                class="w-full py-3.5 sm:py-4 px-6 rounded-full font-semibold text-white shadow-lg shadow-orange-500/25 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] focus:outline-none focus:ring-4 focus:ring-orange-500/30 transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer">
+                                class="w-full py-3.5 sm:py-4 px-6 rounded-full font-semibold text-white shadow-lg shadow-orange-500/25 bg-linear-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] focus:outline-none focus:ring-4 focus:ring-orange-500/30 transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                             </svg>
@@ -248,7 +248,7 @@
                 <div class="mt-8 pt-1 text-center">
                     <p class="text-sm text-slate-500 leading-relaxed">
                         Belum punya akun?
-                        <a href="/register" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Daftar Sekarang →</a>
+                        <a href="/register" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Daftar Sekarang Ã¢â€ â€™</a>
                     </p>
                 </div>
 
@@ -277,10 +277,10 @@
 
             <!-- Footer: Copyright & Contact Links (Matching reference) -->
             <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 pt-4">
-                <span>&copy; 2026 TobaCare · Pemkab Toba</span>
+                <span>&copy; 2026 TobaCare Ã‚Â· Pemkab Toba</span>
                 <div class="flex items-center space-x-4">
                     <a href="mailto:kontak@tobacare.test" class="hover:text-slate-600 transition">Contact Us</a>
-                    <span class="text-slate-300">·</span>
+                    <span class="text-slate-300">Ã‚Â·</span>
                     <span class="hover:text-slate-600 cursor-pointer flex items-center">
                         Bahasa Indonesia
                         <svg class="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -324,10 +324,13 @@
         const alertText = document.getElementById('login-alert-text');
         alertText.textContent = message;
         alertBox.classList.remove('hidden');
+        alertBox.classList.add('flex');
     }
 
     function hideAlert() {
-        document.getElementById('login-alert').classList.add('hidden');
+        const alertBox = document.getElementById('login-alert');
+        alertBox.classList.add('hidden');
+        alertBox.classList.remove('flex');
     }
 
     async function handleLogin(e) {
@@ -427,13 +430,19 @@
         // Show notice banner if redirected from reporting CTA
         if (redirectParam) {
             const banner = document.getElementById('redirect-banner');
-            if (banner) banner.classList.remove('hidden');
+            if (banner) {
+                banner.classList.remove('hidden');
+                banner.classList.add('flex');
+            }
         }
 
         // Show success banner if just registered
         if (urlParams.get('registered') === '1') {
             const banner = document.getElementById('registered-banner');
-            if (banner) banner.classList.remove('hidden');
+            if (banner) {
+                banner.classList.remove('hidden');
+                banner.classList.add('flex');
+            }
         }
 
         const token = window.TobaCare ? window.TobaCare.getToken() : localStorage.getItem('tobacare_token');

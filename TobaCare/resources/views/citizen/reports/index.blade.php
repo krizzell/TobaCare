@@ -1,6 +1,6 @@
 @extends('layouts.citizen')
 
-@section('title', 'Aspirasi Saya — Portal Warga TobaCare')
+@section('title', 'Aspirasi Saya Ã¢â‚¬â€ Portal Warga TobaCare')
 
 @section('content')
 <div class="space-y-6">
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Hero Card for Citizen -->
-    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-xl border border-slate-700/50">
+    <div class="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-xl border border-slate-700/50">
         <!-- Subtle civic pattern in background -->
         <div class="absolute -right-10 -bottom-10 w-64 h-64 rounded-full bg-rose-500/10 blur-3xl pointer-events-none"></div>
         <div class="absolute right-10 top-1/2 -translate-y-1/2 hidden md:block opacity-15">
@@ -38,7 +38,7 @@
             </p>
             <div class="pt-2 flex flex-wrap items-center gap-3">
                 <a href="/citizen/reports/create"
-                   class="inline-flex items-center px-5 py-2.5 rounded-full font-bold text-white text-xs sm:text-sm shadow-lg shadow-orange-500/25 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
+                   class="inline-flex items-center px-5 py-2.5 rounded-full font-bold text-white text-xs sm:text-sm shadow-lg shadow-orange-500/25 bg-linear-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
                     <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                     </svg>
@@ -354,7 +354,7 @@
                                 <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 ${address}
                             </span>
-                            <span class="hidden sm:inline">·</span>
+                            <span class="hidden sm:inline">Ã‚Â·</span>
                             <span class="hidden sm:inline">${dateStr}</span>
                         </div>
                     </div>

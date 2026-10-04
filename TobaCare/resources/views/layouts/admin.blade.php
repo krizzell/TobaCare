@@ -190,7 +190,7 @@
         <!-- Footer -->
         <footer class="bg-white border-t border-slate-200 py-3.5 px-4 sm:px-6 lg:px-8 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-2">
             <div>
-                &copy; 2026 TobaCare — Sistem Informasi & Pengaduan Pelayanan Publik Terpadu Kab. Toba
+                &copy; 2026 TobaCare Ã¢â‚¬â€ Sistem Informasi & Pengaduan Pelayanan Publik Terpadu Kab. Toba
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>

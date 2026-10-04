@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Akun — TobaCare')
+@section('title', 'Daftar Akun Ã¢â‚¬â€ TobaCare')
 
 @section('body')
 <div class="min-h-screen bg-[#ecebe8] text-slate-800 flex items-center justify-center p-3 sm:p-6 lg:p-10 antialiased selection:bg-rose-500 selection:text-white">
-    <div class="w-full max-w-[1200px] bg-white rounded-3xl lg:rounded-[2.5rem] shadow-2xl border border-slate-200/70 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[720px]">
+    <div class="w-full max-w-300 bg-white rounded-3xl lg:rounded-[2.5rem] shadow-2xl border border-slate-200/70 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-180">
 
         <!-- LEFT PANE: Dark Brand & Visual Hero -->
         <div class="lg:col-span-6 xl:col-span-7 bg-[#171412] text-white p-8 sm:p-12 lg:p-14 flex flex-col justify-between relative overflow-hidden">
             <!-- Concentric Circular Radar/Ripple Lines -->
-            <div class="absolute -right-24 top-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full border border-white/[0.05] pointer-events-none"></div>
-            <div class="absolute -right-12 top-1/2 -translate-y-1/2 w-[360px] h-[360px] rounded-full border border-white/[0.07] pointer-events-none"></div>
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[240px] h-[240px] rounded-full border border-white/[0.09] pointer-events-none"></div>
+            <div class="absolute -right-24 top-1/2 -translate-y-1/2 w-120 h-120 rounded-full border border-white/5 pointer-events-none"></div>
+            <div class="absolute -right-12 top-1/2 -translate-y-1/2 w-90 h-90 rounded-full border border-white/7 pointer-events-none"></div>
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-60 h-60 rounded-full border border-white/9 pointer-events-none"></div>
             <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-rose-500/5 blur-3xl pointer-events-none"></div>
 
             <!-- Top Tagline -->
             <div class="relative z-10">
                 <p class="text-xs sm:text-sm font-light text-slate-300/80 tracking-wide">
-                    Sistem Pelayanan Terpadu & Aspirasi Publik — Kabupaten Toba
+                    Sistem Pelayanan Terpadu & Aspirasi Publik Ã¢â‚¬â€ Kabupaten Toba
                 </p>
             </div>
 
@@ -26,7 +26,7 @@
                 <div class="space-y-4">
                     <h1 class="text-3xl sm:text-4xl xl:text-5xl font-extrabold tracking-tight text-white leading-[1.15]">
                         Bergabung bersama<br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-400 to-rose-300">warga peduli Toba</span>
+                        <span class="text-transparent bg-clip-text bg-linear-to-r from-amber-400 via-rose-400 to-rose-300">warga peduli Toba</span>
                     </h1>
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
                         Buat akun gratis dan mulai berkontribusi. Setiap laporan yang kamu kirim membantu pemerintah memprioritaskan perbaikan infrastruktur di sekitar kamu.
@@ -41,7 +41,7 @@
                         ['icon' => 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7', 'text' => 'Lihat peta sebaran masalah di sekitarmu'],
                     ] as $item)
                     <div class="flex items-center space-x-3 text-sm text-slate-300">
-                        <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                        <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center shrink-0">
                             <svg class="w-3.5 h-3.5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}" />
                             </svg>
@@ -86,16 +86,16 @@
                 </p>
 
                 <!-- Alert: Error -->
-                <div id="register-alert" class="hidden mb-5 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-start space-x-2.5">
-                    <svg class="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div id="register-alert" class="hidden mb-5 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm items-start space-x-2.5">
+                    <svg class="w-4 h-4 text-rose-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div id="register-alert-text" class="leading-relaxed"></div>
                 </div>
 
                 <!-- Alert: Success -->
-                <div id="register-success" class="hidden mb-5 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-start space-x-2.5">
-                    <svg class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div id="register-success" class="hidden mb-5 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm items-start space-x-2.5">
+                    <svg class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div class="leading-relaxed">
@@ -145,7 +145,7 @@
                                 <div id="str-3" class="h-1 flex-1 rounded-full bg-slate-200 transition-colors duration-300"></div>
                                 <div id="str-4" class="h-1 flex-1 rounded-full bg-slate-200 transition-colors duration-300"></div>
                             </div>
-                            <p id="str-label" class="text-[11px] text-slate-400 leading-none min-h-[11px]"></p>
+                            <p id="str-label" class="text-[11px] text-slate-400 leading-none min-h-2.75"></p>
                         </div>
                         <p id="password-error" class="hidden text-xs text-rose-600 mt-1.5 pl-4 leading-relaxed"></p>
                     </div>
@@ -161,7 +161,7 @@
                     <!-- Terms & Privacy checkbox -->
                     <div class="flex items-start space-x-3 px-1 pt-1">
                         <input id="terms" type="checkbox" required
-                               class="mt-0.5 w-4 h-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500 cursor-pointer flex-shrink-0">
+                               class="mt-0.5 w-4 h-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500 cursor-pointer shrink-0">
                         <label for="terms" class="text-xs text-slate-500 leading-relaxed cursor-pointer">
                             Saya menyetujui <a href="#" class="text-[#FF512F] hover:underline font-medium">Syarat & Ketentuan</a> serta <a href="#" class="text-[#FF512F] hover:underline font-medium">Kebijakan Privasi</a> TobaCare. Data saya hanya digunakan untuk keperluan pelaporan masyarakat.
                         </label>
@@ -189,7 +189,7 @@
                     <!-- Submit Button -->
                     <div class="pt-3">
                         <button type="submit" id="reg-btn-submit"
-                                class="w-full py-3.5 sm:py-4 px-6 rounded-full font-semibold text-white shadow-lg shadow-orange-500/25 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] focus:outline-none focus:ring-4 focus:ring-orange-500/30 transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer">
+                                class="w-full py-3.5 sm:py-4 px-6 rounded-full font-semibold text-white shadow-lg shadow-orange-500/25 bg-linear-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] focus:outline-none focus:ring-4 focus:ring-orange-500/30 transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                             </svg>
@@ -206,17 +206,17 @@
                 <div class="mt-8 pt-1 text-center">
                     <p class="text-sm text-slate-500 leading-relaxed">
                         Sudah punya akun?
-                        <a href="/login" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Masuk Sekarang →</a>
+                        <a href="/login" class="font-semibold text-[#FF512F] hover:text-[#E03E1A] transition">Masuk Sekarang Ã¢â€ â€™</a>
                     </p>
                 </div>
             </div>
 
             <!-- Footer -->
             <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 pt-4">
-                <span>&copy; 2026 TobaCare · Pemkab Toba</span>
+                <span>&copy; 2026 TobaCare Ã‚Â· Pemkab Toba</span>
                 <div class="flex items-center space-x-4">
                     <a href="mailto:kontak@tobacare.test" class="hover:text-slate-600 transition">Contact Us</a>
-                    <span class="text-slate-300">·</span>
+                    <span class="text-slate-300">Ã‚Â·</span>
                     <span class="text-slate-500">Bahasa Indonesia</span>
                 </div>
             </div>
@@ -276,12 +276,16 @@
     function showAlert(msg) {
         document.getElementById('register-alert-text').textContent = msg;
         document.getElementById('register-alert').classList.remove('hidden');
+        document.getElementById('register-alert').classList.add('flex');
         document.getElementById('register-success').classList.add('hidden');
+        document.getElementById('register-success').classList.remove('flex');
     }
 
     function showSuccess() {
         document.getElementById('register-success').classList.remove('hidden');
+        document.getElementById('register-success').classList.add('flex');
         document.getElementById('register-alert').classList.add('hidden');
+        document.getElementById('register-alert').classList.remove('flex');
         document.getElementById('register-form').classList.add('opacity-50', 'pointer-events-none');
     }
 
@@ -299,6 +303,8 @@
         const email    = document.getElementById('reg-email').value.trim();
         const password = document.getElementById('reg-password').value;
         const confirm  = document.getElementById('reg-password-confirm').value;
+        document.getElementById('register-success').classList.add('hidden');
+        document.getElementById('register-success').classList.remove('flex');
 
         // Client-side validation
         let hasError = false;

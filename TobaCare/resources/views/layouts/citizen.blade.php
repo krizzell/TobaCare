@@ -42,7 +42,7 @@
                 <div class="flex items-center space-x-3 sm:space-x-4">
                     <!-- Create Report Button (Vibrant Call to Action) -->
                     <a href="/citizen/reports/create"
-                       class="inline-flex items-center px-4 py-2 rounded-full font-semibold text-white text-xs sm:text-sm shadow-md shadow-orange-500/20 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
+                       class="inline-flex items-center px-4 py-2 rounded-full font-semibold text-white text-xs sm:text-sm shadow-md shadow-orange-500/20 bg-linear-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
                         <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
@@ -82,11 +82,11 @@
     <footer class="bg-white border-t border-slate-200 py-6 mt-auto">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-3">
             <div>
-                &copy; 2026 Pemerintah Kabupaten Toba — Layanan Aspirasi & Pengaduan Fasilitas Publik.
+                &copy; 2026 Pemerintah Kabupaten Toba Ã¢â‚¬â€ Layanan Aspirasi & Pengaduan Fasilitas Publik.
             </div>
             <div class="flex items-center space-x-4">
                 <span class="text-slate-400">Layanan Darurat / Call Center: <strong class="text-slate-700">112</strong></span>
-                <span class="text-slate-300">·</span>
+                <span class="text-slate-300">Ã‚Â·</span>
                 <a href="mailto:aspirasi@tobacare.test" class="hover:text-slate-700 transition">Bantuan Warga</a>
             </div>
         </div>

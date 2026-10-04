@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Tinjauan Laporan — TobaCare')
+@section('title', 'Tinjauan Laporan Ã¢â‚¬â€ TobaCare')
 
 @section('content')
 <div class="space-y-6 max-w-6xl mx-auto">
@@ -449,7 +449,7 @@
 
             return `
                 <div class="flex items-start space-x-3 text-xs">
-                    <div class="w-2 h-2 rounded-full bg-slate-400 mt-1.5 flex-shrink-0"></div>
+                    <div class="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0"></div>
                     <div class="flex-1">
                         <div class="font-semibold text-slate-800">${item.to_status}</div>
                         <div class="text-slate-500 text-[11px]">Oleh: ${actor} &bull; ${time}</div>

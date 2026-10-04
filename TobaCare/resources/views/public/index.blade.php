@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'TobaCare — Portal Aspirasi & Transparansi Perbaikan Fasilitas Publik Kab. Toba')
+@section('title', 'TobaCare Ã¢â‚¬â€ Portal Aspirasi & Transparansi Perbaikan Fasilitas Publik Kab. Toba')
 
 @section('body')
 <div class="min-h-screen bg-[#F8FAFC] flex flex-col antialiased text-slate-800 selection:bg-rose-500 selection:text-white">
@@ -75,7 +75,7 @@
     <main class="flex-1">
 
         <!-- 1. HERO SECTION & PURPOSE -->
-        <section class="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/70 to-[#F8FAFC] pt-12 sm:pt-20 pb-16 sm:pb-24 border-b border-slate-200/80">
+        <section class="relative overflow-hidden bg-linear-to-b from-white via-slate-50/70 to-[#F8FAFC] pt-12 sm:pt-20 pb-16 sm:pb-24 border-b border-slate-200/80">
             <!-- Background Decorative Blur Rings -->
             <div class="absolute -top-24 right-1/4 w-96 h-96 rounded-full bg-rose-500/10 blur-3xl pointer-events-none"></div>
             <div class="absolute top-1/2 -left-20 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl pointer-events-none"></div>
@@ -85,7 +85,7 @@
                 <!-- Institutional Badge -->
                 <div class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200/80 text-rose-700 text-xs font-semibold shadow-2xs">
                     <span class="w-2 h-2 rounded-full bg-rose-500 mr-2 animate-ping"></span>
-                    Pemerintah Kabupaten Toba — Portal Pelayanan Aspirasi Terpadu
+                    Pemerintah Kabupaten Toba Ã¢â‚¬â€ Portal Pelayanan Aspirasi Terpadu
                 </div>
 
                 <!-- Main Hero Headline -->
@@ -102,7 +102,7 @@
                 <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                     <!-- Laporkan Keluhanmu Button -->
                     <button type="button" onclick="handleReportComplaintClick()"
-                            class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-full font-extrabold text-white text-sm sm:text-base shadow-lg shadow-orange-500/30 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
+                            class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-full font-extrabold text-white text-sm sm:text-base shadow-lg shadow-orange-500/30 bg-linear-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
                         <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
@@ -295,7 +295,7 @@
                 </div>
 
                 <!-- Pagination for Facilities -->
-                <div id="facilities-pagination" class="hidden flex items-center justify-between py-4 text-xs text-slate-500 border-t border-slate-200">
+                <div id="facilities-pagination" class="hidden items-center justify-between py-4 text-xs text-slate-500 border-t border-slate-200">
                     <span id="facilities-page-info">Halaman 1</span>
                     <div class="flex space-x-2">
                         <button type="button" id="btn-fac-prev" onclick="changeFacilityPage(-1)"
@@ -375,7 +375,7 @@
 
                 <div class="text-center pt-4">
                     <button type="button" onclick="handleReportComplaintClick()"
-                            class="inline-flex items-center px-6 py-3 rounded-full font-bold text-white text-xs sm:text-sm shadow-md shadow-orange-500/20 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
+                            class="inline-flex items-center px-6 py-3 rounded-full font-bold text-white text-xs sm:text-sm shadow-md shadow-orange-500/20 bg-linear-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition transform hover:scale-[1.02] cursor-pointer">
                         <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
@@ -421,13 +421,13 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-6">
                 <div class="flex items-center space-x-3">
                     <img src="{{ asset('images/tobacare-logo.png') }}" alt="TobaCare" class="w-16 h-12 object-contain object-center">
-                    <span class="text-base font-bold text-slate-800">TobaCare — Transparansi Fasilitas Publik</span>
+                    <span class="text-base font-bold text-slate-800">TobaCare Ã¢â‚¬â€ Transparansi Fasilitas Publik</span>
                 </div>
                 <div class="flex items-center space-x-4 text-xs font-semibold text-slate-500">
                     <a href="/login" class="hover:text-slate-900 transition">Login Petugas / Admin</a>
-                    <span>·</span>
+                    <span>Ã‚Â·</span>
                     <a href="#tujuan" class="hover:text-slate-900 transition">Tentang Kami</a>
-                    <span>·</span>
+                    <span>Ã‚Â·</span>
                     <a href="#fasilitas-selesai" class="hover:text-slate-900 transition">Galeri Perbaikan</a>
                 </div>
             </div>
@@ -443,7 +443,7 @@
 
 
 <!-- Facility Detail Modal (Public Transparency Modal) -->
-<div id="facility-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4" onclick="closeFacilityModal()">
+<div id="facility-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4" onclick="closeFacilityModal()">
     <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6" onclick="event.stopPropagation()">
         
         <!-- Header -->
@@ -467,7 +467,7 @@
         </div>
 
         <!-- Photo Evidence -->
-        <div class="rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 aspect-16/9 relative group">
+        <div class="rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 aspect-video relative group">
             <img id="fac-modal-img" src="" alt="Bukti Perbaikan" class="w-full h-full object-cover">
         </div>
 
@@ -638,14 +638,18 @@
                         <p class="text-xs text-slate-400">Coba ubah kata kunci pencarian atau pilih kategori lain.</p>
                     </div>
                 `;
-                document.getElementById('facilities-pagination').classList.add('hidden');
+                const pagination = document.getElementById('facilities-pagination');
+                pagination.classList.add('hidden');
+                pagination.classList.remove('flex');
                 return;
             }
 
             grid.innerHTML = items.map(fac => renderFacilityCard(fac)).join('');
 
             // Pagination Controls
-            document.getElementById('facilities-pagination').classList.remove('hidden');
+            const pagination = document.getElementById('facilities-pagination');
+            pagination.classList.remove('hidden');
+            pagination.classList.add('flex');
             document.getElementById('facilities-page-info').textContent = `Halaman ${data.meta.current_page} dari ${totalPages} (Total ${data.meta.total} Fasilitas)`;
             document.getElementById('btn-fac-prev').disabled = currentPage <= 1;
             document.getElementById('btn-fac-next').disabled = currentPage >= totalPages;
@@ -744,14 +748,18 @@
             const imgEl = document.getElementById('fac-modal-img');
             imgEl.src = fac.thumbnail_url || (fac.images && fac.images[0] ? fac.images[0].url : '');
 
-            document.getElementById('facility-detail-modal').classList.remove('hidden');
+            const modal = document.getElementById('facility-detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         } catch (err) {
             TobaCare.toast('Gagal memuat rincian fasilitas.', 'error');
         }
     }
 
     function closeFacilityModal() {
-        document.getElementById('facility-detail-modal').classList.add('hidden');
+        const modal = document.getElementById('facility-detail-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
     }
 
     function setPublicFilterCategory(catCode) {

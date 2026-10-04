@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/tobacare-logo.png') }}">
-    <title>@yield('title', 'TobaCare') — Sistem Pengaduan Lingkungan & Fasum</title>
+    <title>@yield('title', 'TobaCare') Ã¢â‚¬â€ Sistem Pengaduan Lingkungan & Fasum</title>
 
     <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
     @yield('body')
 
     <!-- Global Confirmation Modal (Replacing ugly browser confirm) -->
-    <div id="global-confirm-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div id="global-confirm-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 transform transition-all space-y-4">
             <div class="flex items-start space-x-3.5">
                 <div id="global-confirm-icon-wrapper" class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
@@ -72,9 +72,11 @@
                 btnAction.className = `px-4 py-2 rounded-xl text-xs font-semibold shadow-xs transition cursor-pointer ${options.confirmClass || 'bg-slate-900 hover:bg-slate-800 text-white'}`;
 
                 modal.classList.remove('hidden');
+                modal.classList.add('flex');
 
                 const cleanup = () => {
                     modal.classList.add('hidden');
+                    modal.classList.remove('flex');
                     btnAction.onclick = null;
                     btnCancel.onclick = null;
                 };
@@ -168,8 +170,8 @@
                 }`;
 
                 const icon = type === 'error'
-                    ? '<svg class="w-5 h-5 mr-3 flex-shrink-0 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
-                    : '<svg class="w-5 h-5 mr-3 flex-shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+                    ? '<svg class="w-5 h-5 mr-3 shrink-0 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+                    : '<svg class="w-5 h-5 mr-3 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
 
                 toast.innerHTML = `
                     ${icon}

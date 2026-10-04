@@ -1,6 +1,6 @@
 @extends('layouts.citizen')
 
-@section('title', 'Buat Laporan Baru — TobaCare')
+@section('title', 'Buat Laporan Baru Ã¢â‚¬â€ TobaCare')
 
 @section('content')
 <div class="max-w-2xl mx-auto space-y-6">
@@ -74,7 +74,7 @@
             </div>
 
             <!-- Upload Preview Area -->
-            <div id="photo-preview-box" class="hidden rounded-2xl border border-slate-200 p-4 bg-slate-50 flex items-center justify-between">
+            <div id="photo-preview-box" class="hidden rounded-2xl border border-slate-200 p-4 bg-slate-50 items-center justify-between">
                 <div class="flex items-center space-x-3 min-w-0">
                     <img id="photo-preview-img" src="" alt="Pratinjau" class="w-16 h-16 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
                     <div class="min-w-0">
@@ -223,7 +223,7 @@
                     Ubah Data
                 </button>
                 <button type="button" id="btn-submit-report" onclick="submitFinalReport()"
-                        class="px-8 py-3 rounded-full font-bold text-white text-xs sm:text-sm shadow-lg shadow-orange-500/25 bg-gradient-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition cursor-pointer flex items-center space-x-2">
+                        class="px-8 py-3 rounded-full font-bold text-white text-xs sm:text-sm shadow-lg shadow-orange-500/25 bg-linear-to-r from-[#FF4E20] via-[#FF5F2E] to-[#E92359] hover:from-[#E63F12] hover:to-[#CF1749] transition cursor-pointer flex items-center space-x-2">
                     <span id="btn-submit-text">Kirim Laporan Resmi</span>
                     <svg id="btn-submit-spinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -309,7 +309,7 @@
             document.getElementById('report-lat').value = lat;
             document.getElementById('report-lng').value = lng;
             document.getElementById('coords-display').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            status.textContent = `${village.name}, ${district.name} — koordinat terisi otomatis.`;
+            status.textContent = `${village.name}, ${district.name} Ã¢â‚¬â€ koordinat terisi otomatis.`;
         } catch (error) {
             resetCoordinates();
             status.textContent = 'Koordinat otomatis gagal ditemukan. Silakan pilih desa lain atau coba lagi.';
@@ -375,7 +375,9 @@
             document.getElementById('photo-preview-img').src = e.target.result;
             document.getElementById('photo-preview-name').textContent = file.name;
             document.getElementById('photo-upload-status').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5 animate-pulse"></span> Mengunggah foto ke server...';
-            document.getElementById('photo-preview-box').classList.remove('hidden');
+            const previewBox = document.getElementById('photo-preview-box');
+            previewBox.classList.remove('hidden');
+            previewBox.classList.add('flex');
         };
         reader.readAsDataURL(file);
 
@@ -411,7 +413,9 @@
         uploadedImageId = null;
         uploadedImageUrl = null;
         document.getElementById('photo-input').value = '';
-        document.getElementById('photo-preview-box').classList.add('hidden');
+        const previewBox = document.getElementById('photo-preview-box');
+        previewBox.classList.add('hidden');
+        previewBox.classList.remove('flex');
         document.getElementById('btn-next-1').disabled = true;
     }
 

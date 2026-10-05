@@ -126,25 +126,25 @@
                 <div class="pt-8 sm:pt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-left">
                     <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 block">Fasilitas Diperbaiki</span>
-                        <div id="stat-hero-resolved" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">280+</div>
+                        <div id="stat-hero-resolved" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">—</div>
                         <span class="text-[11px] text-slate-400">tuntas ditangani</span>
                     </div>
 
                     <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-sky-700 block">Kecamatan Terlayani</span>
-                        <div class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">16</div>
+                        <div id="stat-hero-districts" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">—</div>
                         <span class="text-[11px] text-slate-400">seluruh Kab. Toba</span>
                     </div>
 
                     <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700 block">Rata-rata Respon</span>
-                        <div class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">2.4 Hari</div>
+                        <div id="stat-hero-resolution" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">—</div>
                         <span class="text-[11px] text-slate-400">kecepatan triase</span>
                     </div>
 
                     <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-purple-700 block">Transparansi Publik</span>
-                        <div class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">100%</div>
+                        <div id="stat-hero-transparency" class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">—</div>
                         <span class="text-[11px] text-slate-400">terbuka untuk warga</span>
                     </div>
                 </div>
@@ -626,6 +626,11 @@
             if (data.stats && data.stats.total_resolved !== undefined) {
                 const heroStat = document.getElementById('stat-hero-resolved');
                 if (heroStat) heroStat.textContent = `${data.stats.total_resolved}+`;
+                document.getElementById('stat-hero-districts').textContent = data.stats.districts_coverage ?? '—';
+                document.getElementById('stat-hero-resolution').textContent =
+                    data.stats.avg_resolution_days === null ? '—' : `${data.stats.avg_resolution_days} Hari`;
+                document.getElementById('stat-hero-transparency').textContent =
+                    data.stats.public_transparency === null ? '—' : `${data.stats.public_transparency}%`;
             }
 
             if (items.length === 0) {
@@ -671,8 +676,8 @@
                  <span>Dokumentasi Pemkab</span>
                </div>`;
 
-        const catName = fac.category ? fac.category.name : 'Infrastruktur';
-        const address = fac.location ? fac.location.address : 'Kabupaten Toba';
+        const catName = fac.category ? fac.category.name : 'Tidak berkategori';
+        const address = fac.location ? fac.location.address : 'Lokasi tidak tercatat';
         const dateStr = fac.resolved_at ? new Date(fac.resolved_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Terverifikasi';
 
         return `
@@ -735,9 +740,9 @@
             const fac = data.facility;
 
             document.getElementById('fac-modal-title').textContent = fac.title;
-            document.getElementById('fac-modal-category').textContent = fac.category ? fac.category.name : 'Infrastruktur';
-            document.getElementById('fac-modal-location').textContent = fac.location ? fac.location.address_text : 'Kabupaten Toba';
-            document.getElementById('fac-modal-agency').textContent = fac.managing_agency || 'Pemerintah Kabupaten Toba';
+            document.getElementById('fac-modal-category').textContent = fac.category ? fac.category.name : 'Tidak berkategori';
+            document.getElementById('fac-modal-location').textContent = fac.location ? fac.location.address_text : 'Lokasi tidak tercatat';
+            document.getElementById('fac-modal-agency').textContent = fac.managing_agency || 'Tidak tercatat';
             document.getElementById('fac-modal-note').textContent = fac.resolution_note || fac.description;
 
             const dateStr = fac.resolved_at ? new Date(fac.resolved_at).toLocaleDateString('id-ID', {

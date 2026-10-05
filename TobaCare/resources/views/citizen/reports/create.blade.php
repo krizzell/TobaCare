@@ -345,20 +345,12 @@
                 if (currentVal) select.value = currentVal;
             }
         } catch (err) {
-            console.warn('Gagal memuat kategori via API:', err);
+            console.error('Gagal memuat kategori via API:', err);
             if (select && select.options.length <= 1) {
-                const fallbacks = [
-                    { id: 1, name: 'Jalan Rusak' },
-                    { id: 2, name: 'Sampah' },
-                    { id: 3, name: 'Lampu Jalan Rusak' },
-                    { id: 4, name: 'Drainase Rusak' },
-                    { id: 5, name: 'Fasilitas Umum Rusak' },
-                    { id: 6, name: 'Lainnya / Tidak Teridentifikasi' }
-                ];
-                categoriesList = fallbacks;
-                select.innerHTML = '<option value="">-- Pilih Kategori Kerusakan --</option>' +
-                    fallbacks.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                select.innerHTML = '<option value="">Kategori tidak tersedia</option>';
+                select.disabled = true;
             }
+            TobaCare.toast('Kategori laporan tidak dapat dimuat. Silakan muat ulang halaman.', 'error');
         }
     }
 

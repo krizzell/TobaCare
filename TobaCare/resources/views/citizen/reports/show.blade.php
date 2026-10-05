@@ -343,8 +343,8 @@
 
         // Location
         if (r.location) {
-            document.getElementById('detail-district').textContent = r.location.address_text || 'Kabupaten Toba';
-            document.getElementById('detail-address-text').textContent = r.location.address_text || 'Alamat tidak dicantumkan';
+            document.getElementById('detail-district').textContent = r.location?.region || 'Tidak tercatat';
+            document.getElementById('detail-address-text').textContent = r.location?.address_text || 'Tidak tercatat';
             document.getElementById('detail-coords-text').textContent = `${Number(r.location.latitude).toFixed(6)}, ${Number(r.location.longitude).toFixed(6)}`;
             document.getElementById('detail-maps-btn').href = `https://www.google.com/maps?q=${r.location.latitude},${r.location.longitude}`;
         }
@@ -384,7 +384,7 @@
             const opBox = document.getElementById('operator-info-box');
             if (opBox) opBox.classList.remove('hidden');
             const opNameEl = document.getElementById('operator-name');
-            if (opNameEl) opNameEl.textContent = assignment.operator.name || 'Petugas Lapangan';
+            if (opNameEl) opNameEl.textContent = assignment.operator?.name || 'Tidak ditugaskan';
             if (assignment.due_date) {
                 const opDueEl = document.getElementById('operator-due-date');
                 if (opDueEl) opDueEl.textContent = `Target: ${formatDate(assignment.due_date)}`;

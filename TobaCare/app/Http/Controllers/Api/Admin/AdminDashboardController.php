@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AiAnalysis;
 use App\Models\Category;
 use App\Models\Report;
 use Carbon\Carbon;
@@ -24,23 +25,34 @@ class AdminDashboardController extends Controller
         $resolvedCount = Report::where('status', 'resolved')->count();
         $assignedCount = Report::where('status', 'assigned')->count();
 
-        // 10-day trending time series for line chart
+        // 10-day trending time series for line chart, based on actual report categories.
         $timeline = [];
         for ($i = 9; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i);
             $dateStr = $date->format('Y-m-d');
             $label = $date->translatedFormat('d M');
 
-            // Category breakdown sample over time
-            $count = Report::whereDate('created_at', $dateStr)->count();
+            $reports = Report::query()
+                ->with('category:id,code,name')
+                ->whereDate('created_at', $dateStr)
+                ->get(['category_id']);
+            $categoryCount = function (array $terms) use ($reports): int {
+                return $reports->filter(function ($report) use ($terms): bool {
+                    if (! $report->category) {
+                        return false;
+                    }
+                    $value = strtolower($report->category->code . ' ' . $report->category->name);
+                    return collect($terms)->contains(fn (string $term) => str_contains($value, $term));
+                })->count();
+            };
 
             $timeline[] = [
                 'date'          => $dateStr,
                 'label'         => $label,
-                'total'         => $count,
-                'infrastruktur' => max(0, (int) round($count * 0.50)) + ($i % 3 == 0 ? 1 : 0),
-                'kebersihan'    => max(0, (int) round($count * 0.30)) + ($i % 2 == 0 ? 1 : 0),
-                'fasum'         => max(0, (int) round($count * 0.20)),
+                'total'         => $reports->count(),
+                'infrastruktur' => $categoryCount(['jalan', 'drainase', 'lampu', 'infrastruktur']),
+                'kebersihan'    => $categoryCount(['sampah', 'kebersihan']),
+                'fasum'         => $categoryCount(['fasum', 'fasilitas', 'umum']),
             ];
         }
 
@@ -49,19 +61,31 @@ class AdminDashboardController extends Controller
             ->withCount('reports')
             ->get();
 
-        $totalCatReports = $categories->sum('reports_count') ?: 1;
+        $totalCatReports = $categories->sum('reports_count');
         $categoryBreakdown = $categories->map(function ($cat) use ($totalCatReports) {
             return [
                 'id'         => $cat->id,
                 'name'       => $cat->name,
                 'count'      => $cat->reports_count,
-                'percentage' => round(($cat->reports_count / $totalCatReports) * 100, 1),
+                'percentage' => $totalCatReports > 0
+                    ? round(($cat->reports_count / $totalCatReports) * 100, 1)
+                    : 0,
             ];
         });
 
+        $averageAiConfidence = AiAnalysis::query()
+            ->where('status', 'success')
+            ->whereNotNull('fused_confidence')
+            ->avg('fused_confidence');
+        $averageResolutionHours = Report::query()
+            ->where('status', 'resolved')
+            ->whereNotNull('resolved_at')
+            ->selectRaw('AVG(EXTRACT(EPOCH FROM (resolved_at - created_at)) / 3600) as hours')
+            ->value('hours');
+
         // Recent 5 reports for the scorecard table
         $recentReports = Report::query()
-            ->with(['category', 'location', 'activeAssignment.operator'])
+            ->with(['category', 'location', 'activeAssignment.operator', 'currentPriorityRecommendation'])
             ->latest('created_at')
             ->limit(5)
             ->get()
@@ -69,11 +93,11 @@ class AdminDashboardController extends Controller
                 return [
                     'id'              => $r->id,
                     'title'           => $r->title,
-                    'category'        => $r->category?->name ?? 'Umum',
-                    'priority'        => $r->priority_final ?? $r->priority_recommendation?->priority ?? 'medium',
+                    'category'        => $r->category?->name,
+                    'priority'        => $r->priority_final ?? $r->currentPriorityRecommendation?->priority,
                     'status'          => $r->status,
-                    'location'        => $r->location?->address_text ?? 'Kabupaten Toba',
-                    'operator'        => $r->activeAssignment?->operator?->name ?? 'Belum Ditugaskan',
+                    'location'        => $r->location?->address_text,
+                    'operator'        => $r->activeAssignment?->operator?->name,
                     'created_at_diff' => $r->created_at?->diffForHumans(),
                 ];
             });
@@ -85,8 +109,8 @@ class AdminDashboardController extends Controller
                 'in_progress'          => $inProgressCount,
                 'resolved'             => $resolvedCount,
                 'assigned'             => $assignedCount,
-                'ai_verified_rate'     => '94.8%',
-                'avg_resolution_sla'   => '2.4 Hari',
+                'ai_verified_rate'     => $averageAiConfidence === null ? null : round($averageAiConfidence * 100, 1) . '%',
+                'avg_resolution_sla'   => $averageResolutionHours === null ? null : round($averageResolutionHours / 24, 1) . ' Hari',
             ],
             'timeline'           => $timeline,
             'category_breakdown' => $categoryBreakdown,

@@ -32,4 +32,9 @@ class Category extends Model
     {
         return $this->hasMany(Report::class, 'category_id');
     }
+
+    public function defaultAgency()
+    {
+        return $this->belongsTo(Agency::class, 'default_agency_id');
+    }
 }

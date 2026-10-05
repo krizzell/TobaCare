@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Location;
 use App\Models\Report;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,11 +20,11 @@ class PublicFacilityController extends Controller
         $query = Report::query()
             ->where('status', 'resolved')
             ->with([
-                'category',
+                'category.defaultAgency',
                 'location',
                 'images',
                 'statusHistory.user',
-                'activeAssignment.operator',
+                'activeAssignment.agency',
             ]);
 
         // Filter by category
@@ -73,22 +74,9 @@ class PublicFacilityController extends Controller
                 ? $r->statusHistory->firstWhere('to_status', 'resolved')
                 : null;
 
-            $resolutionNote = $resolutionEntry?->note
-                ?? $r->additional_info
-                ?? 'Pekerjaan perbaikan fasilitas telah rampung dituntaskan oleh dinas teknis terkait.';
-
-            // Determine managing OPD agency based on category
-            $catCode = $r->category?->code ?? '';
-            $agency = 'Pemerintah Kabupaten Toba';
-            if (str_contains($catCode, 'jalan') || str_contains($catCode, 'drainase')) {
-                $agency = 'Dinas Pekerjaan Umum & Tata Ruang (PUTR)';
-            } elseif (str_contains($catCode, 'sampah')) {
-                $agency = 'Dinas Lingkungan Hidup Kab. Toba';
-            } elseif (str_contains($catCode, 'lampu')) {
-                $agency = 'Dinas Perhubungan Kab. Toba';
-            } elseif (str_contains($catCode, 'fasum')) {
-                $agency = 'Dinas Perumahan & Kawasan Permukiman';
-            }
+            $resolutionNote = $resolutionEntry?->note ?? $r->additional_info;
+            $agency = $r->activeAssignment?->agency?->name
+                ?? $r->category?->defaultAgency?->name;
 
             return [
                 'id'              => $r->id,
@@ -100,7 +88,7 @@ class PublicFacilityController extends Controller
                     'code' => $r->category->code,
                 ] : null,
                 'location'        => $r->location ? [
-                    'address'   => $r->location->address_text ?? 'Kabupaten Toba',
+                    'address'   => $r->location->address_text,
                     'latitude'  => (float) $r->location->latitude,
                     'longitude' => (float) $r->location->longitude,
                 ] : null,
@@ -117,6 +105,12 @@ class PublicFacilityController extends Controller
 
         // Summary stats
         $totalResolved = Report::where('status', 'resolved')->count();
+        $publicResolved = Report::where('status', 'resolved')->where('is_public', true)->count();
+        $averageResolutionHours = Report::query()
+            ->where('status', 'resolved')
+            ->whereNotNull('resolved_at')
+            ->selectRaw('AVG(EXTRACT(EPOCH FROM (resolved_at - created_at)) / 3600) as hours')
+            ->value('hours');
         $categoriesStats = Category::where('is_active', true)
             ->withCount(['reports' => function ($q) {
                 $q->where('status', 'resolved');
@@ -139,8 +133,15 @@ class PublicFacilityController extends Controller
             ],
             'stats' => [
                 'total_resolved'     => $totalResolved,
+                'public_resolved'    => $publicResolved,
+                'avg_resolution_days'=> $averageResolutionHours === null ? null : round($averageResolutionHours / 24, 1),
+                'public_transparency'=> $totalResolved > 0 ? round(($publicResolved / $totalResolved) * 100, 1) : null,
                 'categories'         => $categoriesStats,
-                'districts_coverage' => 16, // 16 Kecamatan di Kab. Toba
+                'districts_coverage' => Location::query()
+                    ->whereNotNull('region')
+                    ->whereHas('report', fn ($query) => $query->where('status', 'resolved'))
+                    ->distinct()
+                    ->count('region'),
             ],
         ]);
     }
@@ -153,11 +154,11 @@ class PublicFacilityController extends Controller
         $report = Report::query()
             ->where('status', 'resolved')
             ->with([
-                'category',
+                'category.defaultAgency',
                 'location',
                 'images',
                 'statusHistory.user',
-                'activeAssignment.operator',
+                'activeAssignment.agency',
             ])
             ->findOrFail($id);
 
@@ -170,17 +171,8 @@ class PublicFacilityController extends Controller
             ? $report->statusHistory->firstWhere('to_status', 'resolved')
             : null;
 
-        $catCode = $report->category?->code ?? '';
-        $agency = 'Pemerintah Kabupaten Toba';
-        if (str_contains($catCode, 'jalan') || str_contains($catCode, 'drainase')) {
-            $agency = 'Dinas Pekerjaan Umum & Tata Ruang (PUTR)';
-        } elseif (str_contains($catCode, 'sampah')) {
-            $agency = 'Dinas Lingkungan Hidup Kab. Toba';
-        } elseif (str_contains($catCode, 'lampu')) {
-            $agency = 'Dinas Perhubungan Kab. Toba';
-        } elseif (str_contains($catCode, 'fasum')) {
-            $agency = 'Dinas Perumahan & Kawasan Permukiman';
-        }
+        $agency = $report->activeAssignment?->agency?->name
+            ?? $report->category?->defaultAgency?->name;
 
         return response()->json([
             'facility' => [
@@ -194,7 +186,7 @@ class PublicFacilityController extends Controller
                 'images'          => $report->images,
                 'managing_agency' => $agency,
                 'resolved_at'     => $report->resolved_at ?? $resolutionEntry?->created_at ?? $report->updated_at,
-                'resolution_note' => $resolutionEntry?->note ?? 'Pekerjaan perbaikan fisik telah tuntas diselesaikan.',
+                'resolution_note' => $resolutionEntry?->note ?? $report->additional_info,
                 'timeline'        => $report->statusHistory,
             ],
         ]);

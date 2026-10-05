@@ -22,7 +22,7 @@
                 <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span id="date-range-label">1 Okt 2026 – 10 Okt 2026</span>
+                <span id="date-range-label">Memuat rentang data...</span>
             </div>
 
             <!-- Export Button (Emerald green like reference) -->
@@ -54,11 +54,11 @@
                     TC
                 </div>
                 <div class="flex items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                    +8.5%
+                    Data aktual
                 </div>
             </div>
             <div class="mt-3">
-                <div id="kpi-total" class="text-3xl font-extrabold text-slate-900 tracking-tight">1,248</div>
+                <div id="kpi-total" class="text-3xl font-extrabold text-slate-900 tracking-tight">—</div>
                 <div class="text-xs font-medium text-slate-500 mt-1">Total Laporan Masuk</div>
             </div>
         </div>
@@ -72,12 +72,12 @@
                     </svg>
                 </div>
                 <div class="flex items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                    +1.5%
+                    Data aktual
                 </div>
             </div>
             <div class="mt-3">
-                <div id="kpi-ai-accuracy" class="text-3xl font-extrabold text-slate-900 tracking-tight">98.5%</div>
-                <div class="text-xs font-medium text-slate-500 mt-1">Akurasi Rekomendasi AI</div>
+                <div id="kpi-ai-accuracy" class="text-3xl font-extrabold text-slate-900 tracking-tight">—</div>
+                <div class="text-xs font-medium text-slate-500 mt-1">Rata-rata Confidence AI</div>
             </div>
         </div>
 
@@ -90,11 +90,11 @@
                     </svg>
                 </div>
                 <div class="flex items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                    +2.5%
+                    Data aktual
                 </div>
             </div>
             <div class="mt-3">
-                <div id="kpi-in-progress" class="text-3xl font-extrabold text-slate-900 tracking-tight">55</div>
+                <div id="kpi-in-progress" class="text-3xl font-extrabold text-slate-900 tracking-tight">—</div>
                 <div class="text-xs font-medium text-slate-500 mt-1">Dalam Penanganan Lapangan</div>
             </div>
         </div>
@@ -108,11 +108,11 @@
                     </svg>
                 </div>
                 <div class="flex items-center text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">
-                    -12% SLA
+                    Data aktual
                 </div>
             </div>
             <div class="mt-3">
-                <div id="kpi-sla" class="text-3xl font-extrabold text-slate-900 tracking-tight">2.4 Hari</div>
+                <div id="kpi-sla" class="text-3xl font-extrabold text-slate-900 tracking-tight">—</div>
                 <div class="text-xs font-medium text-slate-500 mt-1">Rata-rata Waktu Tuntas</div>
             </div>
         </div>
@@ -218,12 +218,10 @@
                 <div>
                     <div class="flex items-center justify-between text-xs mb-1.5">
                         <span class="font-semibold text-slate-800">Dinas PUTR (Bina Marga)</span>
-                        <span class="font-bold text-slate-900">184 Laporan</span>
+                        <span class="font-bold text-slate-900">—</span>
                     </div>
                     <div class="h-6 w-full bg-slate-100 rounded-lg overflow-hidden flex shadow-inner">
-                        <div class="bg-emerald-500 h-full w-[55%] hover:opacity-90 transition" title="Selesai: 55%"></div>
-                        <div class="bg-sky-500 h-full w-[30%] hover:opacity-90 transition" title="Sedang Dikerjakan: 30%"></div>
-                        <div class="bg-amber-500 h-full w-[15%] hover:opacity-90 transition" title="Ditugaskan: 15%"></div>
+                        <div class="bg-slate-200 h-full w-full" title="Data instansi belum tersedia"></div>
                     </div>
                 </div>
 
@@ -231,12 +229,10 @@
                 <div>
                     <div class="flex items-center justify-between text-xs mb-1.5">
                         <span class="font-semibold text-slate-800">Dinas Lingkungan Hidup</span>
-                        <span class="font-bold text-slate-900">142 Laporan</span>
+                        <span class="font-bold text-slate-900">—</span>
                     </div>
                     <div class="h-6 w-full bg-slate-100 rounded-lg overflow-hidden flex shadow-inner">
-                        <div class="bg-emerald-500 h-full w-[65%] hover:opacity-90 transition" title="Selesai: 65%"></div>
-                        <div class="bg-sky-500 h-full w-[22%] hover:opacity-90 transition" title="Sedang Dikerjakan: 22%"></div>
-                        <div class="bg-amber-500 h-full w-[13%] hover:opacity-90 transition" title="Ditugaskan: 13%"></div>
+                        <div class="bg-slate-200 h-full w-full" title="Data instansi belum tersedia"></div>
                     </div>
                 </div>
 
@@ -244,12 +240,10 @@
                 <div>
                     <div class="flex items-center justify-between text-xs mb-1.5">
                         <span class="font-semibold text-slate-800">Disperkim & Fasum</span>
-                        <span class="font-bold text-slate-900">96 Laporan</span>
+                        <span class="font-bold text-slate-900">—</span>
                     </div>
                     <div class="h-6 w-full bg-slate-100 rounded-lg overflow-hidden flex shadow-inner">
-                        <div class="bg-emerald-500 h-full w-[40%] hover:opacity-90 transition" title="Selesai: 40%"></div>
-                        <div class="bg-sky-500 h-full w-[40%] hover:opacity-90 transition" title="Sedang Dikerjakan: 40%"></div>
-                        <div class="bg-amber-500 h-full w-[20%] hover:opacity-90 transition" title="Ditugaskan: 20%"></div>
+                        <div class="bg-slate-200 h-full w-full" title="Data instansi belum tersedia"></div>
                     </div>
                 </div>
             </div>
@@ -280,32 +274,19 @@
                     <!-- Background circle track -->
                     <circle cx="50" cy="50" r="38" stroke="#F1F5F9" stroke-width="14" fill="transparent" />
                     <!-- Slice 1: Jalan Rusak (50%) -->
-                    <circle cx="50" cy="50" r="38" stroke="#10B981" stroke-width="14" stroke-dasharray="119 238" stroke-dashoffset="0" fill="transparent" />
-                    <!-- Slice 2: Sampah & Kebersihan (25%) -->
-                    <circle cx="50" cy="50" r="38" stroke="#F59E0B" stroke-width="14" stroke-dasharray="60 238" stroke-dashoffset="-119" fill="transparent" />
-                    <!-- Slice 3: Fasum (25%) -->
-                    <circle cx="50" cy="50" r="38" stroke="#E2E8F0" stroke-width="14" stroke-dasharray="59 238" stroke-dashoffset="-179" fill="transparent" />
+                    <circle id="category-donut-primary" cx="50" cy="50" r="38" stroke="#10B981" stroke-width="14" stroke-dasharray="0 238" stroke-dashoffset="0" fill="transparent" />
                 </svg>
                 <!-- Center Info -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-                    <span class="text-2xl font-black text-slate-900">100%</span>
-                    <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Tervalidasi</span>
+                    <span id="category-total" class="text-2xl font-black text-slate-900">—</span>
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Laporan</span>
                 </div>
             </div>
 
             <!-- Categories Legend List -->
-            <div class="space-y-2 pt-2 border-t border-slate-100 text-xs">
+            <div id="category-breakdown-list" class="space-y-2 pt-2 border-t border-slate-100 text-xs">
                 <div class="flex items-center justify-between text-slate-700">
-                    <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2"></span>Infrastruktur Jalan</span>
-                    <span class="font-bold text-slate-900">50%</span>
-                </div>
-                <div class="flex items-center justify-between text-slate-700">
-                    <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-2"></span>Sampah & Kebersihan</span>
-                    <span class="font-bold text-slate-900">25%</span>
-                </div>
-                <div class="flex items-center justify-between text-slate-700">
-                    <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 mr-2"></span>Fasum & Lampu Penerangan</span>
-                    <span class="font-bold text-slate-900">25%</span>
+                    <span class="text-slate-400">Memuat distribusi kategori...</span>
                 </div>
             </div>
         </div>
@@ -381,7 +362,10 @@
         timelineData = timeline;
         if (!timeline || timeline.length === 0) return;
 
-        const maxVal = 100;
+        const maxVal = Math.max(
+            1,
+            ...timeline.flatMap(item => [item.infrastruktur, item.kebersihan, item.fasum])
+        );
         const width = 800;
         const height = 240;
         const stepX = width / (timeline.length - 1);
@@ -444,9 +428,13 @@
 
         // Position of elements in 800x240 viewBox
         const svgX = clampedIndex * (800 / (timelineData.length - 1));
-        const yInfra = 240 - (item.infrastruktur / 100 * 240);
-        const yKebersihan = 240 - (item.kebersihan / 100 * 240);
-        const yFasum = 240 - (item.fasum / 100 * 240);
+        const maxVal = Math.max(
+            1,
+            ...timelineData.flatMap(item => [item.infrastruktur, item.kebersihan, item.fasum])
+        );
+        const yInfra = 240 - (item.infrastruktur / maxVal * 240);
+        const yKebersihan = 240 - (item.kebersihan / maxVal * 240);
+        const yFasum = 240 - (item.fasum / maxVal * 240);
 
         // Update hover line and dots
         const line = document.getElementById('hover-line');
@@ -499,14 +487,16 @@
             // KPIs
             if (data.kpis) {
                 document.getElementById('kpi-total').textContent = (data.kpis.total_reports || 0).toLocaleString();
-                document.getElementById('kpi-ai-accuracy').textContent = data.kpis.ai_verified_rate || '98.5%';
+                document.getElementById('kpi-ai-accuracy').textContent = data.kpis.ai_verified_rate ?? '—';
                 document.getElementById('kpi-in-progress').textContent = data.kpis.in_progress || 0;
-                document.getElementById('kpi-sla').textContent = data.kpis.avg_resolution_sla || '2.4 Hari';
+                document.getElementById('kpi-sla').textContent = data.kpis.avg_resolution_sla ?? '—';
             }
 
             // Timeline line chart
             if (data.timeline && data.timeline.length > 0) {
                 initTrendChart(data.timeline);
+                document.getElementById('date-range-label').textContent =
+                    `${data.timeline[0].label} – ${data.timeline[data.timeline.length - 1].label}`;
             }
 
             // Recent reports scorecard
@@ -514,11 +504,33 @@
                 recentReportsData = data.recent_reports;
                 renderScorecard(recentReportsData);
             }
+            renderCategoryBreakdown(data.category_breakdown || []);
 
         } catch (err) {
             console.error('Error loading dashboard stats:', err);
             TobaCare.toast('Gagal memuat statistik dashboard.', 'error');
         }
+    }
+
+    function renderCategoryBreakdown(categories) {
+        const list = document.getElementById('category-breakdown-list');
+        const total = categories.reduce((sum, category) => sum + Number(category.count || 0), 0);
+        document.getElementById('category-total').textContent = total.toLocaleString();
+
+        if (categories.length === 0) {
+            list.innerHTML = '<div class="text-slate-400">Belum ada data kategori.</div>';
+            return;
+        }
+
+        list.innerHTML = categories.slice(0, 5).map((category, index) => `
+            <div class="flex items-center justify-between text-slate-700">
+                <span class="flex items-center">
+                    <span class="w-2.5 h-2.5 rounded-full ${['bg-emerald-500', 'bg-amber-500', 'bg-sky-500', 'bg-purple-500', 'bg-slate-400'][index]} mr-2"></span>
+                    ${category.name}
+                </span>
+                <span class="font-bold text-slate-900">${category.count} (${category.percentage}%)</span>
+            </div>
+        `).join('');
     }
 
     function renderScorecard(items) {

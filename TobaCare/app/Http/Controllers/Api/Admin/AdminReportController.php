@@ -127,6 +127,7 @@ class AdminReportController extends Controller
             'currentPriorityRecommendation',
             'activeAssignment.operator',
             'activeAssignment.agency',
+            'resolutionEvidences.uploader',
         ])->findOrFail($id);
 
         return response()->json(new AdminReportDetailResource($report));

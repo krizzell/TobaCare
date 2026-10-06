@@ -67,7 +67,8 @@ Route::prefix('citizen')->group(function () {
             'category',
             'statusHistory.user',
             'analyses.classifications',
-            'activeAssignment.operator'
+            'activeAssignment.operator',
+            'resolutionEvidences.uploader',
         ])->find($id);
 
         return view('citizen.reports.show', [

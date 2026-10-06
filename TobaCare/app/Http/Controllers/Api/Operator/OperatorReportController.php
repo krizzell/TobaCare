@@ -6,12 +6,14 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\Report;
+use App\Models\ResolutionEvidence;
 use App\Services\AuditLogger;
 use App\Services\NotificationService;
 use App\Support\ReportTransitions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class OperatorReportController extends Controller
 {
@@ -99,7 +101,10 @@ class OperatorReportController extends Controller
                 'category',
                 'images',
                 'activeAssignment.assignedBy',
+                'activeAssignment.agency',
                 'statusHistory.user',
+                'resolutionEvidences.uploader',
+                'user:id,name',
             ])
             ->findOrFail($id);
 
@@ -174,10 +179,16 @@ class OperatorReportController extends Controller
         $operator = $request->user();
 
         $data = $request->validate([
-            'note' => ['required', 'string', 'min:5', 'max:500'],
+            'note'           => ['required', 'string', 'min:5', 'max:500'],
+            'evidence_image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,webp,jpg', 'max:5120'],
+            'file'           => ['nullable', 'file', 'image', 'mimes:jpeg,png,webp,jpg', 'max:5120'],
         ], [
-            'note.required' => 'Catatan penyelesaian pekerjaan wajib diisi.',
-            'note.min'      => 'Catatan penyelesaian minimal 5 karakter.',
+            'note.required'        => 'Catatan penyelesaian pekerjaan wajib diisi.',
+            'note.min'             => 'Catatan penyelesaian minimal 5 karakter.',
+            'evidence_image.image' => 'Bukti penyelesaian harus berupa berkas gambar.',
+            'evidence_image.max'   => 'Ukuran foto bukti tidak boleh melebihi 5 MB.',
+            'file.image'           => 'Bukti penyelesaian harus berupa berkas gambar.',
+            'file.max'             => 'Ukuran foto bukti tidak boleh melebihi 5 MB.',
         ]);
 
         $report = Report::query()
@@ -201,7 +212,24 @@ class OperatorReportController extends Controller
         }
 
         DB::transaction(function () use ($report, $operator, $data, $request) {
-            $report->transitionTo('resolved', $operator->id, $data['note']);
+            $report->transitionTo('resolved', $operator->id, $data['note'], [
+                'resolved_at' => now(),
+            ]);
+
+            // Save evidence image if uploaded
+            $uploadedFile = $request->file('evidence_image') ?? $request->file('file');
+            if ($uploadedFile) {
+                $path = $uploadedFile->store('evidences/' . date('Y/m'), 'public');
+                ResolutionEvidence::create([
+                    'report_id'     => $report->id,
+                    'assignment_id' => $report->activeAssignment?->id,
+                    'uploaded_by'   => $operator->id,
+                    'storage_key'   => $path,
+                    'mime_type'     => $uploadedFile->getMimeType(),
+                    'size_bytes'    => $uploadedFile->getSize(),
+                    'note'          => $data['note'],
+                ]);
+            }
 
             $this->auditLogger->log(
                 $operator,
@@ -209,7 +237,7 @@ class OperatorReportController extends Controller
                 'report',
                 $report->id,
                 ['status' => 'in_progress'],
-                ['status' => 'resolved', 'note' => $data['note']],
+                ['status' => 'resolved', 'note' => $data['note'], 'has_evidence' => (bool) $uploadedFile],
                 $request->ip()
             );
 
@@ -225,7 +253,61 @@ class OperatorReportController extends Controller
 
         return response()->json([
             'message' => 'Laporan berhasil ditandai selesai (resolved).',
-            'report'  => $report->fresh(['location', 'category', 'images', 'activeAssignment']),
+            'report'  => $report->fresh(['location', 'category', 'images', 'activeAssignment', 'resolutionEvidences.uploader']),
         ]);
     }
+
+    /**
+     * POST /api/v1/operator/reports/{id}/evidence - Upload additional resolution evidence photo.
+     */
+    public function uploadEvidence(Request $request, string $id): JsonResponse
+    {
+        $operator = $request->user();
+
+        $request->validate([
+            'file' => ['required', 'file', 'image', 'mimes:jpeg,png,webp,jpg', 'max:5120'],
+            'note' => ['nullable', 'string', 'max:500'],
+        ], [
+            'file.required' => 'Berkas foto bukti wajib diunggah.',
+            'file.image'    => 'Berkas harus berupa gambar.',
+            'file.max'      => 'Ukuran foto bukti tidak boleh melebihi 5 MB.',
+        ]);
+
+        $report = Report::query()
+            ->whereHas('assignments', function ($q) use ($operator) {
+                $q->where('operator_id', $operator->id)
+                  ->where('is_active', true);
+            })
+            ->with('activeAssignment')
+            ->findOrFail($id);
+
+        $file = $request->file('file');
+        $path = $file->store('evidences/' . date('Y/m'), 'public');
+
+        $evidence = ResolutionEvidence::create([
+            'report_id'     => $report->id,
+            'assignment_id' => $report->activeAssignment?->id,
+            'uploaded_by'   => $operator->id,
+            'storage_key'   => $path,
+            'mime_type'     => $file->getMimeType(),
+            'size_bytes'    => $file->getSize(),
+            'note'          => $request->input('note') ? strip_tags($request->input('note')) : null,
+        ]);
+
+        $this->auditLogger->log(
+            $operator,
+            'report.upload_evidence',
+            'report',
+            $report->id,
+            [],
+            ['evidence_id' => $evidence->id],
+            $request->ip()
+        );
+
+        return response()->json([
+            'message'  => 'Foto bukti penyelesaian berhasil diunggah.',
+            'evidence' => $evidence->fresh('uploader'),
+        ], 201);
+    }
+
 }

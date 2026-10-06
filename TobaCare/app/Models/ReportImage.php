@@ -27,6 +27,6 @@ class ReportImage extends Model
             return null;
         }
 
-        return Storage::disk('public')->url($this->storage_key);
+        return '/storage/' . ltrim($this->storage_key, '/');
     }
 }

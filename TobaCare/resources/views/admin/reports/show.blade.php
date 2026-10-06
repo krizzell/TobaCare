@@ -98,6 +98,24 @@
                 </div>
             </div>
 
+            <!-- Resolution Evidence Section (FR-23 / Bukti Perbaikan Lapangan) -->
+            <div id="admin-evidence-panel" class="hidden bg-white rounded-xl shadow-xs border border-slate-200 p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Bukti Fisik Penyelesaian Lapangan Petugas
+                    </h2>
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                        Bukti Selesai
+                    </span>
+                </div>
+                <div id="admin-evidence-gallery" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
         </div>
 
         <!-- Right Column: AI Decision Support, Assignment, & History (Span 1) -->
@@ -389,6 +407,28 @@
 
         // Status Timeline
         renderTimeline(data.status_history);
+
+        // Resolution Evidence Panel
+        const evidences = data.resolution_evidences || [];
+        const evPanel = document.getElementById('admin-evidence-panel');
+        const evGallery = document.getElementById('admin-evidence-gallery');
+        if (evidences.length > 0) {
+            evPanel.classList.remove('hidden');
+            evGallery.innerHTML = evidences.map(ev => `
+                <div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/50 space-y-2">
+                    <div class="rounded-lg overflow-hidden border border-emerald-300 aspect-video bg-white">
+                        <img src="${ev.url}" alt="Bukti Lapangan" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-xs space-y-1">
+                        <p class="font-semibold text-slate-800 leading-snug">${ev.note || 'Pekerjaan fisik telah diselesaikan oleh operator.'}</p>
+                        <span class="text-[11px] text-slate-500 block">Petugas: <strong>${ev.uploader?.name || 'Operator Lapangan'}</strong></span>
+                        <span class="text-[10px] text-slate-400 block">${ev.created_at ? new Date(ev.created_at).toLocaleString('id-ID') : ''}</span>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            evPanel.classList.add('hidden');
+        }
 
         // Render Action Buttons
         renderActionButtons(r.status);

@@ -46,6 +46,7 @@ Route::prefix('v1')->group(function () {
             Route::get('reports/{id}',                 [OperatorReportController::class, 'show'])->whereUuid('id');
             Route::post('reports/{id}/start-progress', [OperatorReportController::class, 'startProgress'])->whereUuid('id');
             Route::post('reports/{id}/resolve',        [OperatorReportController::class, 'resolve'])->whereUuid('id');
+            Route::post('reports/{id}/evidence',       [OperatorReportController::class, 'uploadEvidence'])->whereUuid('id');
         });
 
         // Admin endpoints

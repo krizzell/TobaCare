@@ -110,6 +110,13 @@ class AdminReportDetailResource extends JsonResource
                 'note'        => $activeAssignment->note,
                 'accepted_at' => $activeAssignment->accepted_at?->toISOString(),
             ] : null,
+            'resolution_evidences' => $this->resolutionEvidences ? $this->resolutionEvidences->map(fn ($ev) => [
+                'id'          => $ev->id,
+                'url'         => $ev->url,
+                'uploader'    => $ev->uploader ? ['id' => $ev->uploader->id, 'name' => $ev->uploader->name] : null,
+                'note'        => $ev->note,
+                'created_at'  => $ev->created_at?->toISOString(),
+            ])->values()->all() : [],
         ];
     }
 }

@@ -86,7 +86,7 @@
         <div class="lg:col-span-2 space-y-6">
 
             <!-- Resolution Banner (Shown only when resolved) -->
-            <div id="resolution-banner" class="hidden bg-linear-to-r from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-md">
+            <div id="resolution-banner" class="hidden bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-md">
                 <div class="flex items-start space-x-3">
                     <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -100,6 +100,12 @@
                         </p>
                         <div class="text-[11px] text-emerald-200 pt-1 font-medium" id="resolution-timestamp"></div>
                     </div>
+                </div>
+
+                <!-- Resolution Evidence Container -->
+                <div id="citizen-evidence-box" class="hidden mt-4 pt-4 border-t border-white/20">
+                    <span class="text-xs font-bold text-white block mb-2">Foto Bukti Hasil Perbaikan Fisik Petugas:</span>
+                    <div id="citizen-evidence-gallery" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                 </div>
             </div>
 
@@ -205,7 +211,7 @@
                         <span id="st-step-4">4. Tuntas</span>
                     </div>
                     <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
-                        <div id="stepper-progress-bar" class="bg-linear-to-r from-orange-500 via-sky-500 to-emerald-500 h-full w-1/4 transition-all duration-500"></div>
+                        <div id="stepper-progress-bar" class="bg-gradient-to-r from-orange-500 via-sky-500 to-emerald-500 h-full w-1/4 transition-all duration-500"></div>
                     </div>
                 </div>
 
@@ -239,7 +245,7 @@
             </div>
 
             <!-- Help & Hotline Box -->
-            <div class="bg-linear-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white shadow-md space-y-3">
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white shadow-md space-y-3">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-rose-300">
                     Bantuan Terpadu
                 </span>
@@ -343,8 +349,8 @@
 
         // Location
         if (r.location) {
-            document.getElementById('detail-district').textContent = r.location?.region || 'Tidak tercatat';
-            document.getElementById('detail-address-text').textContent = r.location?.address_text || 'Tidak tercatat';
+            document.getElementById('detail-district').textContent = r.location.address_text || 'Kabupaten Toba';
+            document.getElementById('detail-address-text').textContent = r.location.address_text || 'Alamat tidak dicantumkan';
             document.getElementById('detail-coords-text').textContent = `${Number(r.location.latitude).toFixed(6)}, ${Number(r.location.longitude).toFixed(6)}`;
             document.getElementById('detail-maps-btn').href = `https://www.google.com/maps?q=${r.location.latitude},${r.location.longitude}`;
         }
@@ -354,12 +360,16 @@
         photosGrid.innerHTML = '';
         if (r.images && r.images.length > 0) {
             r.images.forEach((img, idx) => {
+                let imgUrl = img.url || (img.storage_key ? `/storage/${img.storage_key}` : '');
+                if (imgUrl && imgUrl.includes('/storage/')) {
+                    imgUrl = '/storage/' + imgUrl.split('/storage/')[1];
+                }
                 const imgCard = document.createElement('div');
                 imgCard.className = 'group relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-4/3 cursor-pointer shadow-2xs hover:shadow-md transition';
-                imgCard.onclick = () => openPhotoModal(img.url, `Foto Bukti #${idx + 1} — ${r.title}`);
+                imgCard.onclick = () => openPhotoModal(imgUrl, `Foto Bukti #${idx + 1} — ${r.title}`);
                 imgCard.innerHTML = `
-                    <img src="${img.url}" alt="Foto Bukti" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                    <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+                    <img src="${imgUrl}" alt="Foto Bukti" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
                         <span class="text-[11px] text-white font-medium flex items-center">
                             <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -384,7 +394,7 @@
             const opBox = document.getElementById('operator-info-box');
             if (opBox) opBox.classList.remove('hidden');
             const opNameEl = document.getElementById('operator-name');
-            if (opNameEl) opNameEl.textContent = assignment.operator?.name || 'Tidak ditugaskan';
+            if (opNameEl) opNameEl.textContent = assignment.operator.name || 'Petugas Lapangan';
             if (assignment.due_date) {
                 const opDueEl = document.getElementById('operator-due-date');
                 if (opDueEl) opDueEl.textContent = `Target: ${formatDate(assignment.due_date)}`;
@@ -406,6 +416,20 @@
             if (resolvedEntry && resolvedEntry.created_at) {
                 const tsEl = document.getElementById('resolution-timestamp');
                 if (tsEl) tsEl.textContent = `Dituntaskan pada: ${formatDateTime(resolvedEntry.created_at)}`;
+            }
+
+            // Display resolution evidences if available
+            const evidences = r.resolution_evidences || r.resolutionEvidences || [];
+            const evBox = document.getElementById('citizen-evidence-box');
+            const evGallery = document.getElementById('citizen-evidence-gallery');
+            if (evBox && evGallery && evidences.length > 0) {
+                evBox.classList.remove('hidden');
+                evGallery.innerHTML = evidences.map(ev => `
+                    <div class="rounded-2xl overflow-hidden bg-white/10 p-1.5 border border-white/20">
+                        <img src="${ev.url}" alt="Foto Bukti Perbaikan" class="w-full h-36 object-cover rounded-xl cursor-pointer" onclick="openLightbox('${ev.url}', 'Foto Hasil Perbaikan Fisik Petugas')">
+                        ${ev.note ? `<p class="text-[11px] text-emerald-100 p-1.5 italic font-medium">"${ev.note}"</p>` : ''}
+                    </div>
+                `).join('');
             }
         }
 

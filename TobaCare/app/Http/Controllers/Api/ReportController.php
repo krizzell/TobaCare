@@ -158,7 +158,8 @@ class ReportController extends Controller
             'category',
             'statusHistory.user',
             'analyses.classifications',
-            'activeAssignment.operator'
+            'activeAssignment.operator',
+            'resolutionEvidences.uploader',
         ])->findOrFail($id);
 
         $role = $request->user()->role->name;

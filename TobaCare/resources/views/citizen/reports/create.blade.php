@@ -128,7 +128,7 @@
                         @endforeach
                     @endif
                 </select>
-                <span class="text-[10px] text-slate-400 mt-1 block">Sistem AI akan mengecek kesesuaian kategori ini dengan foto bukti yang Anda kirim.</span>
+                <span class="text-[10px] text-slate-400 mt-1 block">Sistem akan memeriksa kesesuaian kategori ini dengan foto bukti yang Anda kirim.</span>
             </div>
 
             <!-- Deskripsi Rinci -->
@@ -143,9 +143,18 @@
 
             <!-- Lokasi & Alamat (FR-04) -->
             <div class="space-y-2">
-                <label class="block text-xs font-bold text-slate-700">
-                    Wilayah Kejadian di Kab. Toba <span class="text-rose-500">*</span>
-                </label>
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold text-slate-700">
+                        Wilayah Kejadian di Kab. Toba <span class="text-rose-500">*</span>
+                    </label>
+                    <button type="button" onclick="detectGPSLocation()"
+                            class="text-[11px] font-semibold text-rose-600 hover:text-rose-800 flex items-center cursor-pointer transition">
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        </svg>
+                        <span>Gunakan GPS Saya</span>
+                    </button>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <select id="report-district" required
                             class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
@@ -156,7 +165,12 @@
                         <option value="">Pilih kecamatan terlebih dahulu</option>
                     </select>
                 </div>
-                <p id="region-status" class="text-[11px] text-slate-400">Pilih kecamatan lalu desa/kelurahan untuk mengisi koordinat otomatis.</p>
+                <p id="region-status" class="text-[11px] text-slate-500 flex items-center">
+                    <svg class="w-3.5 h-3.5 mr-1 text-slate-400 inline shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Pilih kecamatan lalu desa/kelurahan untuk mengisi koordinat otomatis.</span>
+                </p>
 
                 <div class="flex items-center pt-2">
                     <label for="report-address" class="block text-xs font-bold text-slate-700">
@@ -167,9 +181,9 @@
                           placeholder="Contoh: Jl. Sisingamangaraja No. 45, samping kantor camat"
                           class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"></textarea>
 
-                <div class="flex items-center space-x-2 text-[11px] text-slate-400 font-mono pt-1">
-                    <span>Koordinat:</span>
-                    <span id="coords-display">Belum dipilih</span>
+                <div class="flex items-center space-x-2 text-[11px] font-mono pt-1">
+                    <span class="text-slate-500">Koordinat:</span>
+                    <span id="coords-display" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 text-[11px] font-medium">Belum dipilih</span>
                     <input type="hidden" id="report-lat">
                     <input type="hidden" id="report-lng">
                 </div>
@@ -213,7 +227,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div class="leading-relaxed">
-                    Laporan akan dianalisis secara otomatis oleh sistem AI untuk mendeteksi tingkat keparahan, kemudian diverifikasi langsung oleh Admin Dinas Pemkab Toba sebelum ditugaskan ke petugas lapangan.
+                    Laporan akan diproses secara transparan dan diverifikasi langsung oleh Admin Dinas Pemkab Toba sebelum ditugaskan ke petugas teknis lapangan.
                 </div>
             </div>
 
@@ -246,6 +260,74 @@
     let districtsList = [];
     let villagesList = [];
 
+    const TOBA_DISTRICT_COORDS = {
+        'Balige': { lat: 2.3354, lng: 99.0628 },
+        'Laguboti': { lat: 2.3789, lng: 99.1178 },
+        'Silaen': { lat: 2.3850, lng: 99.1920 },
+        'Habinsaran': { lat: 2.3920, lng: 99.3400 },
+        'Pintu Pohan Meranti': { lat: 2.5200, lng: 99.3000 },
+        'Borbor': { lat: 2.3200, lng: 99.3300 },
+        'Porsea': { lat: 2.4501, lng: 99.1412 },
+        'Ajibata': { lat: 2.6680, lng: 98.9320 },
+        'Lumban Julu': { lat: 2.5600, lng: 99.0800 },
+        'Uluan': { lat: 2.4850, lng: 99.0900 },
+        'Sigumpar': { lat: 2.4150, lng: 99.1350 },
+        'Siantar Narumonda': { lat: 2.4350, lng: 99.1400 },
+        'Nassau': { lat: 2.2900, lng: 99.4000 },
+        'Tampahan': { lat: 2.3150, lng: 99.0250 },
+        'Bonatua Lunasi': { lat: 2.4650, lng: 99.1550 },
+        'Parmaksian': { lat: 2.4450, lng: 99.1650 },
+    };
+
+    function setCoordinates(lat, lng, label) {
+        const numLat = Number(lat);
+        const numLng = Number(lng);
+        if (isNaN(numLat) || isNaN(numLng)) return;
+
+        document.getElementById('report-lat').value = numLat.toFixed(6);
+        document.getElementById('report-lng').value = numLng.toFixed(6);
+        const display = document.getElementById('coords-display');
+        display.textContent = `${numLat.toFixed(5)}, ${numLng.toFixed(5)} (${label || 'Kab. Toba'})`;
+        display.className = 'px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold flex items-center gap-1';
+    }
+
+    function resetCoordinates() {
+        document.getElementById('report-lat').value = '';
+        document.getElementById('report-lng').value = '';
+        const display = document.getElementById('coords-display');
+        display.textContent = 'Belum dipilih';
+        display.className = 'px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 text-[11px] font-medium';
+    }
+
+    function detectGPSLocation() {
+        if (!navigator.geolocation) {
+            TobaCare.toast('Browser Anda tidak mendukung geolokasi GPS.', 'warning');
+            return;
+        }
+
+        const status = document.getElementById('region-status');
+        status.innerHTML = '<span class="text-rose-600 font-medium">Mendeteksi koordinat GPS perangkat Anda...</span>';
+        TobaCare.toast('Sedang mengambil koordinat GPS perangkat...', 'info');
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                setCoordinates(lat, lng, 'GPS Akurat');
+                status.innerHTML = `<span class="text-emerald-600 font-semibold">✓ Titik GPS berhasil dikunci (${lat.toFixed(5)}, ${lng.toFixed(5)})</span>`;
+                TobaCare.toast('Titik koordinat GPS berhasil dikunci!', 'success');
+            },
+            (err) => {
+                let msg = 'Izin lokasi GPS tidak diberikan.';
+                if (err.code === 2) msg = 'Posisi GPS tidak dapat ditentukan.';
+                if (err.code === 3) msg = 'Waktu permintaan GPS habis.';
+                TobaCare.toast(msg + ' Tetap menggunakan koordinat wilayah terpilih.', 'info');
+                status.innerHTML = '<span>Pilih kecamatan lalu desa/kelurahan untuk mengisi koordinat otomatis.</span>';
+            },
+            { enableHighAccuracy: true, timeout: 8000 }
+        );
+    }
+
     async function loadTobaRegions() {
         const districtSelect = document.getElementById('report-district');
         const villageSelect = document.getElementById('report-village');
@@ -268,11 +350,21 @@
         const villageSelect = document.getElementById('report-village');
         villageSelect.disabled = true;
         villageSelect.innerHTML = '<option value="">Memuat desa/kelurahan...</option>';
-        resetCoordinates();
 
         if (!districtCode) {
+            resetCoordinates();
             villageSelect.innerHTML = '<option value="">Pilih kecamatan terlebih dahulu</option>';
             return;
+        }
+
+        const district = districtsList.find(item => item.code === districtCode);
+        const districtName = district ? district.name : '';
+
+        // Immediately set coordinate to district centroid so user is never empty
+        if (districtName) {
+            const fallback = TOBA_DISTRICT_COORDS[districtName] || { lat: 2.3354, lng: 99.0628 };
+            setCoordinates(fallback.lat, fallback.lng, `Kecamatan ${districtName}`);
+            document.getElementById('region-status').innerHTML = `<span>Kecamatan ${districtName} terpilih. Silakan pilih desa/kelurahan untuk presisi lokasi.</span>`;
         }
 
         try {
@@ -296,7 +388,7 @@
         if (!district || !village) return;
 
         const status = document.getElementById('region-status');
-        status.textContent = 'Mencari koordinat desa...';
+        status.innerHTML = `<span class="text-slate-500">Mencari koordinat presisi ${village.name}...</span>`;
 
         try {
             const params = new URLSearchParams({ district: district.name, village: village.name });
@@ -306,21 +398,14 @@
 
             const lat = Number(result.lat);
             const lng = Number(result.lng);
-            document.getElementById('report-lat').value = lat;
-            document.getElementById('report-lng').value = lng;
-            document.getElementById('coords-display').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            status.textContent = `${village.name}, ${district.name} — koordinat terisi otomatis.`;
+            setCoordinates(lat, lng, `${village.name}, ${district.name}`);
+            status.innerHTML = `<span class="text-emerald-600 font-semibold">✓ Koordinat otomatis terisi untuk ${village.name}, Kec. ${district.name}.</span>`;
         } catch (error) {
-            resetCoordinates();
-            status.textContent = 'Koordinat otomatis gagal ditemukan. Silakan pilih desa lain atau coba lagi.';
-            TobaCare.toast(error.message, 'warning');
+            // Never reset or wipe out coordinates on error! Fallback to district centroid
+            const fallback = TOBA_DISTRICT_COORDS[district.name] || { lat: 2.3354, lng: 99.0628 };
+            setCoordinates(fallback.lat, fallback.lng, `Kecamatan ${district.name}`);
+            status.innerHTML = `<span class="text-emerald-700 font-medium">✓ Koordinat disetel ke wilayah ${district.name}.</span>`;
         }
-    }
-
-    function resetCoordinates() {
-        document.getElementById('report-lat').value = '';
-        document.getElementById('report-lng').value = '';
-        document.getElementById('coords-display').textContent = 'Belum dipilih';
     }
 
     async function loadCategoriesDropdown() {
@@ -525,7 +610,7 @@
                 body: JSON.stringify(payload)
             });
 
-            TobaCare.toast('Laporan berhasil dikirim! Sistem AI sedang memproses awal.', 'success');
+            TobaCare.toast('Laporan berhasil dikirim! Sedang diproses dalam antrean triase dinas.', 'success');
             setTimeout(() => {
                 window.location.href = '/citizen/reports';
             }, 800);

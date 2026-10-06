@@ -45,6 +45,7 @@ class Report extends Model
     public function activeAssignment() { return $this->hasOne(Assignment::class)->where('is_active', true); }
     public function priorityRecommendations() { return $this->hasMany(PriorityRecommendation::class); }
     public function currentPriorityRecommendation() { return $this->hasOne(PriorityRecommendation::class)->where('is_current', true); }
+    public function resolutionEvidences() { return $this->hasMany(ResolutionEvidence::class)->orderBy('created_at', 'desc'); }
 
     public function transitionTo(string $to, ?string $userId = null, ?string $note = null, array $attributes = []): void
     {

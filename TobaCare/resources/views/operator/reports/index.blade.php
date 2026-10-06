@@ -183,12 +183,38 @@
         </div>
 
         <p class="text-xs text-slate-500">
-            Laporkan hasil penanganan kerusakan fisik dan catatan perbaikan teknis. Laporan ini akan dicatat dalam riwayat dan diberitahukan ke warga pelapor.
+            Laporkan hasil penanganan kerusakan fisik, unggah foto bukti perbaikan lapangan, dan catatan teknis. Laporan ini akan dicatat dalam riwayat dan diberitahukan ke warga pelapor.
         </p>
+
+        <!-- Foto Bukti Lapangan -->
+        <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">
+                Foto Bukti Fisik Penyelesaian <span class="text-slate-400 font-normal">(Disarankan)</span>
+            </label>
+            <div class="border-2 border-dashed border-slate-200 hover:border-emerald-400 rounded-xl p-4 text-center cursor-pointer transition bg-slate-50/50 hover:bg-emerald-50/30"
+                 onclick="document.getElementById('resolve-evidence-input').click()">
+                <input type="file" id="resolve-evidence-input" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleResolveEvidenceSelect(event)">
+                <div id="resolve-evidence-placeholder" class="space-y-1">
+                    <svg class="w-8 h-8 mx-auto text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span class="text-xs font-semibold text-slate-700 block">Klik untuk Mengambil / Memilih Foto Bukti</span>
+                    <span class="text-[10px] text-slate-400 block">JPG, PNG, atau WebP (Maks. 5 MB)</span>
+                </div>
+                <div id="resolve-evidence-preview" class="hidden flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200">
+                    <div class="flex items-center space-x-2.5 min-w-0">
+                        <img id="resolve-evidence-img" src="" alt="Bukti" class="w-12 h-12 rounded-lg object-cover border border-slate-200 shrink-0">
+                        <span id="resolve-evidence-filename" class="text-xs font-semibold text-slate-800 truncate block">bukti.jpg</span>
+                    </div>
+                    <button type="button" onclick="event.stopPropagation(); removeResolveEvidence();" class="text-xs text-rose-600 font-bold hover:underline px-2">Hapus</button>
+                </div>
+            </div>
+        </div>
 
         <div>
             <label for="resolve-note" class="block text-xs font-semibold text-slate-700 mb-1">Catatan Penyelesaian Lapangan <span class="text-rose-500">*</span></label>
-            <textarea id="resolve-note" rows="4" required
+            <textarea id="resolve-note" rows="3" required
                       placeholder="Contoh: Lubang jalan telah ditambal dengan lapisan aspal hotmix setebal 5 cm. Aliran lalu lintas telah normal dan aman dilalui warga."
                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
         </div>
@@ -199,7 +225,7 @@
                 Batal
             </button>
             <button type="button" id="btn-submit-resolve" onclick="submitResolve()"
-                    class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-sm font-semibold text-white shadow-xs transition flex items-center">
+                    class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-sm font-semibold text-white shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
                 <span>Konfirmasi Selesai</span>
             </button>
         </div>
@@ -436,7 +462,7 @@
                     ${thumb}
                 </td>
                 <td class="px-5 py-4">
-                    <div class="font-bold text-slate-900 line-clamp-1">${report.title}</div>
+                    <a href="/operator/reports/${report.id}" class="font-bold text-slate-900 hover:text-emerald-600 transition line-clamp-1 block">${report.title}</a>
                     ${address}
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap">
@@ -451,11 +477,48 @@
                 <td class="px-5 py-4 whitespace-nowrap">
                     ${statusBadge}
                 </td>
-                <td class="px-5 py-4 whitespace-nowrap text-right">
+                <td class="px-5 py-4 whitespace-nowrap text-right space-x-1.5">
+                    <a href="/operator/reports/${report.id}"
+                       class="inline-flex items-center px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs shadow-2xs transition">
+                        Detail
+                    </a>
                     ${actionBtn}
                 </td>
             </tr>
         `;
+    }
+
+    let selectedResolveEvidenceFile = null;
+
+    function handleResolveEvidenceSelect(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+            TobaCare.toast('Ukuran foto bukti melebihi 5 MB.', 'warning');
+            e.target.value = '';
+            return;
+        }
+        selectedResolveEvidenceFile = file;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            document.getElementById('resolve-evidence-img').src = evt.target.result;
+            document.getElementById('resolve-evidence-filename').textContent = file.name;
+            document.getElementById('resolve-evidence-placeholder').classList.add('hidden');
+            document.getElementById('resolve-evidence-preview').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeResolveEvidence() {
+        selectedResolveEvidenceFile = null;
+        const input = document.getElementById('resolve-evidence-input');
+        if (input) input.value = '';
+        const img = document.getElementById('resolve-evidence-img');
+        if (img) img.src = '';
+        const ph = document.getElementById('resolve-evidence-placeholder');
+        if (ph) ph.classList.remove('hidden');
+        const prev = document.getElementById('resolve-evidence-preview');
+        if (prev) prev.classList.add('hidden');
     }
 
     function startProgress(reportId) {
@@ -481,11 +544,13 @@
     function openResolveModal(reportId) {
         activeResolveId = reportId;
         document.getElementById('resolve-note').value = '';
+        removeResolveEvidence();
         document.getElementById('resolve-modal').classList.remove('hidden');
     }
 
     function closeResolveModal() {
         activeResolveId = null;
+        removeResolveEvidence();
         document.getElementById('resolve-modal').classList.add('hidden');
     }
 
@@ -503,10 +568,26 @@
         btn.textContent = 'Menyimpan...';
 
         try {
-            await TobaCare.api(`/api/v1/operator/reports/${activeResolveId}/resolve`, {
+            const formData = new FormData();
+            formData.append('note', note);
+            if (selectedResolveEvidenceFile) {
+                formData.append('evidence_image', selectedResolveEvidenceFile);
+            }
+
+            const token = TobaCare.getToken();
+            const res = await fetch(`/api/v1/operator/reports/${activeResolveId}/resolve`, {
                 method: 'POST',
-                body: JSON.stringify({ note })
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                },
+                body: formData,
             });
+
+            const json = await res.json();
+            if (!res.ok) {
+                throw new Error(json.message || json.error?.message || 'Gagal menyelesaikan laporan.');
+            }
 
             TobaCare.toast('Laporan pengerjaan berhasil diselesaikan!', 'success');
             closeResolveModal();
